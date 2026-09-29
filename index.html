@@ -1,0 +1,2985 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NurseHub BD - Academic, BNMC Licensing & BPSC Job Prep. Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background-color: #f4f7f9;
+            /* Security Lock: Disable text selection for visitors */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+        }
+        /* Unlock selection when Admin is logged in */
+        body.admin-unlocked {
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+            user-select: text !important;
+        }
+        /* Always allow typing/selecting inside form inputs */
+        input, textarea, select {
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+            user-select: text !important;
+        }
+        .font-en { font-family: 'Inter', sans-serif; }
+        .hidden { display: none !important; }
+        .active-nav { background-color: #ffffff; color: #0f766e; font-weight: 700; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+        .option-label:has(input:checked) {
+            background-color: #ccfbf1;
+            border-color: #0d9488;
+            font-weight: 600;
+        }
+        /* Compact & Sleek True / False Circle Bubbles (T / F) */
+        .tf-bubble {
+            width: 26px;
+            height: 26px;
+            border-radius: 9999px;
+            border: 1.5px solid #94a3b8;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 11px;
+            color: #475569;
+            background-color: #ffffff;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            user-select: none;
+        }
+        .tf-bubble:hover {
+            border-color: #0d9488;
+            color: #0f766e;
+        }
+        .tf-bubble-label input:checked + .tf-bubble-t {
+            background-color: #0d9488;
+            border-color: #0d9488;
+            color: #ffffff;
+            box-shadow: 0 1px 4px rgba(13, 148, 136, 0.3);
+        }
+        .tf-bubble-label input:checked + .tf-bubble-f {
+            background-color: #e11d48;
+            border-color: #e11d48;
+            color: #ffffff;
+            box-shadow: 0 1px 4px rgba(225, 29, 72, 0.3);
+        }
+        @media print {
+            nav, .no-print { display: none !important; }
+            body { background-color: #ffffff; }
+        }
+    </style>
+</head>
+<body class="text-slate-800 pb-16" oncontextmenu="return isAdminLoggedIn;">
+
+    <!-- ================= TOP NAVIGATION BAR ================= -->
+    <nav class="bg-gradient-to-r from-teal-800 via-teal-700 to-emerald-800 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col md:flex-row justify-between items-center gap-3 relative">
+            
+            <!-- Brand Logo & Name: Tap Logo for Feedback, Tap 'BD' 5 times for Secret Admin -->
+            <div class="relative flex items-center space-x-2.5 select-none">
+                <div onclick="toggleLogoMenu(event)" class="flex items-center space-x-2.5 cursor-pointer group" title="Tap for Feedback">
+                    <div class="bg-white/15 group-hover:bg-white/25 p-2 rounded-xl border border-white/20 text-2xl transition">🩺</div>
+                    <div>
+                        <div class="flex items-center gap-1.5">
+                            <h1 class="text-2xl font-extrabold tracking-tight font-en">Nurse<span class="text-teal-300">Hub</span></h1>
+                            <!-- Secret 5-Tap Trigger on BD -->
+                            <span id="bd-secret-trigger" onclick="handleBdSecretTap(event)" class="bg-teal-900/90 text-teal-200 text-xs font-en font-extrabold px-2 py-0.5 rounded border border-teal-400/40 cursor-pointer active:scale-95 transition">BD</span>
+                        </div>
+                        <p class="text-[11px] text-teal-100 font-en tracking-wide">Academic • BNMC Licensing • BPSC Job Prep.</p>
+                    </div>
+                </div>
+
+                <!-- Dropdown Menu on Logo Tap: Feedback -->
+                <div id="logo-dropdown-menu" class="hidden absolute left-0 top-14 w-56 bg-white text-slate-800 rounded-2xl shadow-2xl border border-slate-200 py-2 z-50 font-en">
+                    <div class="px-4 py-1.5 border-b border-slate-100 text-xs font-extrabold text-teal-800 uppercase tracking-wider">
+                        Feedback
+                    </div>
+                    <button onclick="openFeedbackModal('Review')" class="w-full text-left px-4 py-2.5 hover:bg-teal-50 flex items-center gap-2.5 text-sm font-bold text-slate-700 transition">
+                        <span class="text-base">⭐</span>
+                        <div>
+                            <span class="block leading-none">Review</span>
+                            <span class="text-[11px] text-slate-500 font-normal">পোর্টাল সম্পর্কে রিভিউ দিন</span>
+                        </div>
+                    </button>
+                    <button onclick="openFeedbackModal('Report a Problem')" class="w-full text-left px-4 py-2.5 hover:bg-rose-50 flex items-center gap-2.5 text-sm font-bold text-rose-700 transition">
+                        <span class="text-base">⚠️</span>
+                        <div>
+                            <span class="block leading-none">Report a Problem</span>
+                            <span class="text-[11px] text-slate-500 font-normal">যেকোনো সমস্যা বা অভিযোগ জানান</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Navigation Buttons (Admin is HIDDEN by default; unlocked by 5 taps on 'BD') -->
+            <div class="flex flex-wrap justify-center gap-1.5 font-en text-xs md:text-sm">
+                <button id="nav-home" onclick="showTab('home')" class="nav-btn active-nav px-3 py-1.5 rounded-lg transition">Home</button>
+                <button id="nav-exam" onclick="showTab('exam')" class="nav-btn hover:bg-white/10 px-3 py-1.5 rounded-lg transition">Exam Zone</button>
+                <button id="nav-routine" onclick="showTab('routine')" class="nav-btn hover:bg-white/10 px-3 py-1.5 rounded-lg transition">Routine Maker</button>
+                <button id="nav-clinical" onclick="showTab('clinical')" class="nav-btn hover:bg-white/10 px-3 py-1.5 rounded-lg transition">Smart Calculator</button>
+                <button id="nav-notes" onclick="showTab('notes')" class="nav-btn hover:bg-white/10 px-3 py-1.5 rounded-lg transition">Pocket Guide</button>
+                <button id="nav-admin" onclick="showTab('admin')" class="nav-btn hidden bg-slate-900/80 hover:bg-slate-900 text-amber-300 border border-amber-400/40 px-3 py-1.5 rounded-lg transition">🔒 Admin</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ================= VISITOR REVIEW & REPORT MODAL ================= -->
+    <div id="feedback-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-200 overflow-hidden">
+            <div id="feedback-modal-header" class="bg-teal-800 text-white px-5 py-4 flex justify-between items-center">
+                <div class="flex items-center gap-2.5">
+                    <span id="fb-modal-icon" class="text-xl">⭐</span>
+                    <h3 id="fb-modal-title" class="text-lg font-extrabold font-en">Submit a Review</h3>
+                </div>
+                <button onclick="closeFeedbackModal()" class="text-white/80 hover:text-white text-lg font-bold px-2">✖</button>
+            </div>
+
+            <div class="p-5 space-y-4">
+                <input type="hidden" id="fb-type-input" value="Review">
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1 font-en">Your Name <span class="text-rose-600">*</span></label>
+                    <input type="text" id="fb-visitor-name" placeholder="Your Name(Required)" class="w-full p-3 rounded-xl border border-slate-300 focus:border-teal-600 focus:outline-none text-sm font-en">
+                </div>
+
+                <div id="fb-rating-wrapper">
+                    <label class="block text-xs font-bold text-slate-700 mb-1 font-en">Rating</label>
+                    <select id="fb-visitor-rating" class="w-full p-2.5 rounded-xl border border-slate-300 bg-white text-sm font-en font-semibold">
+                        <option value="⭐⭐⭐⭐⭐ Excellent">⭐⭐⭐⭐⭐ (Excellent)</option>
+                        <option value="⭐⭐⭐⭐ Very Good">⭐⭐⭐⭐ (Very Good)</option>
+                        <option value="⭐⭐⭐ Good">⭐⭐⭐ (Good)</option>
+                        <option value="⭐⭐ Fair">⭐⭐ (Fair)</option>
+                        <option value="⭐ Needs Improvement">⭐ (Needs Improvement)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label id="fb-message-label" class="block text-xs font-bold text-slate-700 mb-1 font-en">Your Review <span class="text-rose-600">*</span></label>
+                    <textarea id="fb-visitor-message" rows="4" placeholder="এখানে বিস্তারিত লিখুন..." class="w-full p-3 rounded-xl border border-slate-300 focus:border-teal-600 focus:outline-none text-sm"></textarea>
+                </div>
+
+                <div class="flex gap-2 pt-1 font-en">
+                    <button onclick="closeFeedbackModal()" class="w-1/3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl text-sm transition">Cancel</button>
+                    <button onclick="submitVisitorFeedback()" class="w-2/3 bg-teal-700 hover:bg-teal-800 text-white font-bold py-2.5 rounded-xl text-sm shadow transition">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MAIN CONTENT CONTAINER ================= -->
+    <div class="max-w-6xl mx-auto px-4 py-6">
+
+        <!-- ================= 1. HOME SECTION ================= -->
+        <div id="home" class="tab-content space-y-8">
+            
+            <!-- Hero Banner -->
+            <div class="bg-gradient-to-br from-slate-900 via-teal-900 to-emerald-900 text-white rounded-2xl shadow-xl p-7 md:p-12 text-center border border-teal-700/40">
+                <span class="bg-teal-500/20 border border-teal-400/30 text-teal-200 px-4 py-1 rounded-full text-xs font-en font-semibold uppercase tracking-wider">NurseHub BD Official Portal</span>
+                <h2 class="text-2xl md:text-5xl font-bold mt-4 leading-tight">নার্সিং একাডেমিক থেকে সরকারি চাকরি—স্মার্ট প্রস্তুতির নির্ভরযোগ্য মাধ্যম</h2>
+                <p class="text-slate-200 mt-3 max-w-2xl mx-auto text-sm md:text-lg leading-relaxed">BPSC সিনিয়র স্টাফ নার্স নিয়োগ, BNMC কম্প্রিহেনসিভ লাইসেন্সিং পরীক্ষা এবং বিএসসি ও ডিপ্লোমা নার্সিং শিক্ষার্থীদের জন্য প্রমাণভিত্তিক (Evidence-Based) স্টাডি পোর্টাল।</p>
+                
+                <div class="mt-7 flex flex-wrap justify-center gap-3">
+                    <button onclick="document.getElementById('home-exams-section').scrollIntoView({behavior: 'smooth'})" class="bg-teal-400 text-slate-950 hover:bg-teal-300 font-bold px-5 py-3 rounded-xl shadow-lg transition transform hover:scale-105 font-en text-sm">
+                        📝 View Live Exams
+                    </button>
+                    <button onclick="showTab('clinical')" class="bg-white/10 border border-white/25 text-white hover:bg-white/20 font-bold px-5 py-3 rounded-xl shadow-lg transition font-en text-sm">
+                        🧮 Smart Calculator
+                    </button>
+                    <button onclick="showTab('routine')" class="bg-amber-400 text-slate-950 hover:bg-amber-300 font-bold px-5 py-3 rounded-xl shadow-lg transition font-en text-sm">
+                        📅 Duty &amp; Study Routine
+                    </button>
+                </div>
+            </div>
+
+            <!-- PUBLISHED LIVE EXAMS ON HOMEPAGE -->
+            <div id="home-exams-section" class="bg-white p-5 md:p-6 rounded-2xl shadow-md border border-teal-200">
+                <div class="flex flex-wrap justify-between items-center gap-3 border-b border-slate-200 pb-4 mb-5">
+                    <div>
+                        <span class="text-xs font-en font-bold uppercase text-teal-700 bg-teal-50 px-3 py-1 rounded-md border border-teal-200">Live Assessment Portal</span>
+                        <h3 class="text-xl md:text-2xl font-bold text-slate-800 mt-2">📝 অনলাইন মডেল টেস্ট (Live Exams)</h3>
+                        <p class="text-sm text-slate-600 font-medium mt-0.5">পছন্দের বিষয় নির্বাচন করে নির্ধারিত সময়ের মধ্যে নিজের প্রস্তুতি যাচাই করুন</p>
+                    </div>
+                    <span id="home-exam-count" class="bg-slate-800 text-white text-xs font-en font-bold px-3.5 py-1.5 rounded-xl">Active Exams: 0</span>
+                </div>
+
+                <!-- Dynamic Exam Cards Container -->
+                <div id="home-exam-list" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+            </div>
+
+            <!-- DYNAMICALLY ADDED NEW TOOLS ON HOMEPAGE -->
+            <div id="home-custom-tools-section" class="hidden bg-white p-5 md:p-6 rounded-2xl shadow-md border border-indigo-200">
+                <div class="flex flex-wrap justify-between items-center gap-3 border-b border-slate-200 pb-4 mb-5">
+                    <div>
+                        <span class="text-xs font-en font-bold uppercase text-indigo-700 bg-indigo-50 px-3 py-1 rounded-md border border-indigo-200">Interactive Nursing Tools</span>
+                        <h3 class="text-xl md:text-2xl font-bold text-slate-800 mt-2">🛠️ স্মার্ট নার্সিং ও স্টাডি টুলস</h3>
+                        <p class="text-sm text-slate-600 font-medium mt-0.5">ক্লিনিক্যাল প্র্যাকটিস ও প্রতিদিনের পড়াশোনা সহজ করার ইন্টারঅ্যাক্টিভ টুলস</p>
+                    </div>
+                    <span id="home-tools-count" class="bg-indigo-700 text-white text-xs font-en font-bold px-3.5 py-1.5 rounded-xl">Tools: 0</span>
+                </div>
+
+                <div id="home-custom-tools-list" class="grid md:grid-cols-2 gap-6"></div>
+            </div>
+
+            <!-- Core Feature Cards -->
+            <div id="home-core-tools-grid" class="grid md:grid-cols-4 gap-4">
+                
+                <div id="home-card-exam" onclick="showTab('exam')" class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 cursor-pointer hover:border-teal-500 hover:shadow-md transition">
+                    <div class="text-xl mb-1.5 font-en font-extrabold text-teal-700">01. Exam Engine</div>
+                    <h3 class="text-base font-bold text-slate-800">স্ট্যান্ডার্ড মডেল টেস্ট</h3>
+                    <p class="text-slate-600 mt-1 text-sm leading-relaxed">একাডেমিক, লাইসেন্সিং ও নিয়োগ পরীক্ষার পূর্ণাঙ্গ প্রস্তুতি এবং তাৎক্ষণিক ফলাফল ও ব্যাখ্যা।</p>
+                </div>
+
+                <div id="home-card-routine" onclick="showTab('routine')" class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 cursor-pointer hover:border-teal-500 hover:shadow-md transition">
+                    <div class="text-xl mb-1.5 font-en font-extrabold text-teal-700">02. Smart Planner</div>
+                    <h3 class="text-base font-bold text-slate-800">ডিউটি ও স্টাডি রুটিন</h3>
+                    <p class="text-slate-600 mt-1 text-sm leading-relaxed">হাসপাতালের ওয়ার্ড ডিউটি ও একাডেমিক পড়াশোনার সময়সূচি সাজানোর স্মার্ট প্ল্যানার।</p>
+                </div>
+
+                <div id="home-card-clinical" onclick="showTab('clinical')" class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 cursor-pointer hover:border-teal-500 hover:shadow-md transition">
+                    <div class="text-xl mb-1.5 font-en font-extrabold text-teal-700">03. Smart Calculator</div>
+                    <h3 class="text-base font-bold text-slate-800">ক্লিনিক্যাল ক্যালকুলেটর</h3>
+                    <p class="text-slate-600 mt-1 text-sm leading-relaxed">আন্তর্জাতিক সূত্রে IV Drip Rate, Drug Dose, EDD এবং BMI নির্ণয়ের নির্ভুল টুলস।</p>
+                </div>
+
+                <div id="home-card-notes" onclick="showTab('notes')" class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 cursor-pointer hover:border-teal-500 hover:shadow-md transition">
+                    <div class="text-xl mb-1.5 font-en font-extrabold text-teal-700">04. Pocket Guide</div>
+                    <h3 class="text-base font-bold text-slate-800">ফ্ল্যাশকার্ড ও ল্যাব চার্ট</h3>
+                    <p class="text-slate-600 mt-1 text-sm leading-relaxed">১০টি হাই-ইল্ড ফ্ল্যাশকার্ড, Vital Signs, Lab Values, Antidotes ও জরুরি মেডিকেল রেফারেন্স।</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ================= 2. EXAM ZONE ================= -->
+        <div id="exam" class="tab-content hidden">
+            
+            <!-- STEP A: STUDENT REGISTRATION GATE -->
+            <div id="exam-registration" class="max-w-xl mx-auto bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden">
+                <div class="bg-teal-800 text-white p-6 text-center">
+                    <span class="bg-teal-600 text-teal-100 text-xs font-en font-bold px-3 py-1 rounded-full uppercase">Candidate Portal</span>
+                    <h2 class="text-2xl font-bold mt-2" id="custom-exam-title">অনলাইন পরীক্ষায় অংশগ্রহণ করুন</h2>
+                    <p class="text-teal-100 text-xs mt-1">পরীক্ষা শুরু করার আগে নিচের তথ্যগুলো পূরণ করুন</p>
+                </div>
+
+                <div id="special-link-banner" class="hidden bg-amber-50 border-b border-amber-200 px-6 py-3 text-center">
+                    <p class="text-xs font-bold text-amber-900 font-en" id="special-link-text"></p>
+                </div>
+
+                <div class="p-6 space-y-4">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1 font-en">Candidate Name <span class="text-rose-600">*</span></label>
+                        <input type="text" id="std-name" placeholder="Example: Ashraful / Farzana Afrin" class="w-full p-3 rounded-xl border border-slate-300 focus:border-teal-600 focus:outline-none text-sm font-en">
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1 font-en">Session <span class="text-rose-600">*</span></label>
+                            <input type="text" id="std-session" placeholder="Example: 2021-22 or 2022-23" class="w-full p-3 rounded-xl border border-slate-300 focus:border-teal-600 focus:outline-none text-sm font-en">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1 font-en">Course</label>
+                            <select id="std-course" class="w-full p-3 rounded-xl border border-slate-300 bg-white text-sm font-en">
+                                <option value="Diploma in Nursing Science & Midwifery">Diploma in Nursing Science & Midwifery</option>
+                                <option value="Diploma in Midwifery">Diploma in Midwifery</option>
+                                <option value="BSC in Nursing">BSC in Nursing</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button onclick="startRegisteredExam()" class="w-full bg-teal-700 hover:bg-teal-800 text-white font-bold py-3.5 rounded-xl shadow-md transition text-base font-en">
+                        Start Exam ➡️
+                    </button>
+                </div>
+            </div>
+
+            <!-- STEP B: ACTIVE EXAM & RESULT INTERFACE -->
+            <div id="active-exam-area" class="hidden">
+                
+                <!-- OFFICIAL RESULT TRANSCRIPT -->
+                <div id="result-box" class="hidden mb-6 bg-white rounded-2xl shadow-xl border-2 border-teal-600 overflow-hidden">
+                    <div class="bg-teal-800 text-white p-5 text-center">
+                        <span class="bg-white/20 text-white px-3 py-0.5 rounded-full text-xs font-en uppercase tracking-wider">NurseHub BD Official Transcript</span>
+                        <h3 class="text-2xl font-extrabold mt-2" id="score-text"></h3>
+                        <p class="text-xs text-teal-200 mt-1 font-en" id="res-exam-title-banner"></p>
+                    </div>
+
+                    <div class="p-5 md:p-6">
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-5 grid grid-cols-2 md:grid-cols-5 gap-3 text-sm">
+                            <div>
+                                <span class="text-xs text-slate-500 block font-en">Candidate Name:</span>
+                                <span class="font-bold text-slate-800 font-en" id="res-std-name"></span>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-500 block font-en">Session:</span>
+                                <span class="font-bold text-teal-700 font-en" id="res-std-session"></span>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-500 block font-en">Course:</span>
+                                <span class="font-bold text-slate-800 font-en" id="res-std-course"></span>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-500 block font-en">Time Taken:</span>
+                                <span class="font-bold text-indigo-700 font-en" id="res-time-taken"></span>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-500 block font-en">Result Status:</span>
+                                <span class="font-bold" id="res-status"></span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-center mb-6">
+                            <div class="bg-slate-50 p-3 rounded-xl border">
+                                <p class="text-xs text-slate-500">মোট প্রশ্ন</p>
+                                <p class="text-xl font-bold text-slate-800 font-en" id="res-total">0</p>
+                            </div>
+                            <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-200">
+                                <p class="text-xs text-emerald-700">সঠিক পয়েন্ট</p>
+                                <p class="text-xl font-bold text-emerald-700 font-en" id="res-correct">0</p>
+                            </div>
+                            <div class="bg-rose-50 p-3 rounded-xl border border-rose-200">
+                                <p class="text-xs text-rose-700">ভুল উত্তর</p>
+                                <p class="text-xl font-bold text-rose-700 font-en" id="res-wrong">0</p>
+                            </div>
+                            <div class="bg-amber-50 p-3 rounded-xl border border-amber-200">
+                                <p class="text-xs text-amber-800">নেগেটিভ কর্তন</p>
+                                <p class="text-xl font-bold text-amber-800 font-en" id="res-neg">0</p>
+                            </div>
+                        </div>
+
+                        <p class="text-center text-xs text-slate-500 mb-4">👇 নিচে প্রতিটি প্রশ্নের সঠিক উত্তর এবং সংক্ষিপ্ত ব্যাখ্যা দেওয়া হলো:</p>
+                        <div class="flex justify-center no-print">
+                            <button onclick="window.print()" class="bg-slate-700 hover:bg-slate-800 text-white px-6 py-2.5 rounded-xl font-bold text-sm shadow transition">
+                                🖨️ রেজাল্ট প্রিন্ট / সেভ করুন
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LIVE EXAM PAPER -->
+                <div class="bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden">
+                    <div class="bg-slate-900 text-white p-3.5 md:px-6 flex flex-wrap justify-between items-center gap-2 border-b border-slate-700">
+                        <div class="text-xs flex flex-wrap items-center gap-2">
+                            <span class="text-teal-300 font-bold font-en" id="live-candidate-banner"></span>
+                            <span class="text-slate-500">|</span>
+                            <span class="text-amber-300 font-bold" id="answered-status">উত্তর: 0/0</span>
+                            <span id="live-neg-badge" class="bg-slate-800 text-slate-300 border border-slate-600 px-2 py-0.5 rounded text-[10px] font-en"></span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div id="timer-badge" class="bg-rose-600 text-white font-bold px-2.5 py-1 rounded-lg text-xs font-en">
+                                ⏳ <span id="exam-timer">00:00</span>
+                            </div>
+                            <button id="top-submit-btn" onclick="submitExam()" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-extrabold px-3 py-1 rounded-lg text-xs shadow transition font-en">
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Questions Container -->
+                    <div id="quiz-container" class="p-4 md:p-6 space-y-4"></div>
+
+                    <!-- Bottom Submit Button -->
+                    <div class="p-5 bg-slate-50 border-t border-slate-200 text-center" id="bottom-submit-area">
+                        <p class="text-xs text-slate-500 mb-3">সবগুলো প্রশ্নের উত্তর যাচাই করে নিচের বাটনে ক্লিক করুন</p>
+                        <button onclick="submitExam()" class="w-full md:w-2/3 bg-teal-700 hover:bg-teal-800 text-white font-bold text-base py-3.5 rounded-xl shadow-lg transition font-en">
+                            Submit Exam
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ================= 3. ROUTINE MAKER (CLEAN, ORGANIZED & PROFESSIONAL) ================= -->
+        <div id="routine" class="tab-content hidden">
+            <div class="bg-white rounded-2xl shadow-md p-5 md:p-7 border border-slate-200 space-y-6">
+                
+                <!-- Clean Header Bar -->
+                <div class="flex flex-wrap justify-between items-center gap-3 border-b border-slate-100 pb-4">
+                    <div>
+                        <h2 class="text-xl md:text-2xl font-extrabold text-teal-900 font-en">📅 Clinical Roster &amp; Study Routine</h2>
+                        <p class="text-xs md:text-sm text-slate-600 mt-0.5">হাসপাতালের ওয়ার্ড ডিউটি এবং প্রতিদিনের পড়াশোনার গোছানো সময়সূচি</p>
+                    </div>
+                    <div class="flex items-center gap-2 font-en no-print">
+                        <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold px-3.5 py-2 rounded-xl text-xs shadow-sm transition">
+                            🖨️ Print PDF
+                        </button>
+                        <button onclick="clearRoutine()" class="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold px-3 py-2 rounded-xl text-xs transition">
+                            🗑️ Reset
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Clean 3-Column Summary Strip -->
+                <div class="grid grid-cols-3 gap-2.5 text-center">
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <span class="text-[11px] text-slate-500 font-semibold block">মোট রুটিন</span>
+                        <span class="text-lg font-extrabold text-slate-800 font-en" id="rt-stat-total">0</span>
+                    </div>
+                    <div class="bg-teal-50/60 p-3 rounded-xl border border-teal-200">
+                        <span class="text-[11px] text-teal-800 font-semibold block">ওয়ার্ড ডিউটি</span>
+                        <span class="text-lg font-extrabold text-teal-900 font-en" id="rt-stat-clinical">0</span>
+                    </div>
+                    <div class="bg-indigo-50/60 p-3 rounded-xl border border-indigo-200">
+                        <span class="text-[11px] text-indigo-800 font-semibold block">স্টাডি সেশন</span>
+                        <span class="text-lg font-extrabold text-indigo-900 font-en" id="rt-stat-study">0</span>
+                    </div>
+                </div>
+
+                <!-- Organized Add Schedule Box -->
+                <div class="bg-slate-50 p-4 md:p-5 rounded-2xl border border-slate-200 space-y-3.5 no-print">
+                    <div class="flex flex-wrap justify-between items-center gap-2">
+                        <span class="text-xs font-bold text-teal-900 font-en uppercase tracking-wide">➕ Add New Schedule</span>
+                        <select onchange="applyShiftPreset(this.value); this.value='';" class="text-xs font-en font-semibold bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-slate-700">
+                            <option value="">⚡ Quick Shift Template...</option>
+                            <option value="8:00 AM - 2:00 PM|🏥 Clinical Ward Duty">🌅 Morning Ward (8:00 AM - 2:00 PM)</option>
+                            <option value="2:00 PM - 8:00 PM|🏥 Clinical Ward Duty">🌇 Evening Ward (2:00 PM - 8:00 PM)</option>
+                            <option value="8:00 PM - 8:00 AM|🏥 Clinical Ward Duty">🌙 Night Ward (8:00 PM - 8:00 AM)</option>
+                            <option value="7:00 PM - 9:30 PM|📖 Academic Study">📖 Evening Study (7:00 PM - 9:30 PM)</option>
+                            <option value="10:00 PM - 12:00 AM|🎯 Licensing/BPSC Job Prep.">🎯 Job Prep (10:00 PM - 12:00 AM)</option>
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1 font-en">Day (বার)</label>
+                            <select id="rt-day" class="w-full p-2.5 rounded-xl border border-slate-300 bg-white text-sm">
+                                <option value="শনিবার (Saturday)">শনিবার (Saturday)</option>
+                                <option value="রবিবার (Sunday)">রবিবার (Sunday)</option>
+                                <option value="সোমবার (Monday)">সোমবার (Monday)</option>
+                                <option value="মঙ্গলবার (Tuesday)">মঙ্গলবার (Tuesday)</option>
+                                <option value="বুধবার (Wednesday)">বুধবার (Wednesday)</option>
+                                <option value="বৃহস্পতিবার (Thursday)">বৃহস্পতিবার (Thursday)</option>
+                                <option value="শুক্রবার (Friday)">শুক্রবার (Friday)</option>
+                                <option value="প্রতিদিন (Daily)">প্রতিদিন (Daily)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1 font-en">Time / Shift (সময়)</label>
+                            <input type="text" id="rt-time" placeholder="e.g. 8:00 AM - 2:00 PM" class="w-full p-2.5 rounded-xl border border-slate-300 bg-white text-sm font-en">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1 font-en">Category (ধরন)</label>
+                            <select id="rt-type" class="w-full p-2.5 rounded-xl border border-slate-300 bg-white text-sm font-en">
+                                <option value="🏥 Clinical Ward Duty">🏥 Clinical Ward Duty</option>
+                                <option value="📖 Academic Study">📖 Academic Study</option>
+                                <option value="🎯 Licensing/BPSC Job Prep.">🎯 Licensing/BPSC Job Prep.</option>
+                                <option value="🧪 Lab / Procedure Practice">🧪 Lab / Procedure Practice</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1 font-en">Ward / Subject (বিষয়)</label>
+                            <input type="text" id="rt-topic" placeholder="e.g. Medicine Ward / Anatomy" class="w-full p-2.5 rounded-xl border border-slate-300 bg-white text-sm font-en">
+                        </div>
+                    </div>
+
+                    <button onclick="addRoutineItem()" class="w-full md:w-auto bg-teal-700 hover:bg-teal-800 text-white font-bold px-6 py-2.5 rounded-xl text-sm shadow transition font-en">
+                        ➕ Add to Routine
+                    </button>
+                </div>
+
+                <!-- Clean Filter & Schedule Table -->
+                <div>
+                    <div class="flex justify-between items-center mb-3 no-print">
+                        <span class="text-xs font-bold text-slate-500 font-en uppercase">📋 Saved Schedule</span>
+                        <select onchange="filterRoutineByDay(this.value)" class="text-xs font-en font-bold bg-slate-100 border border-slate-300 rounded-lg px-2.5 py-1.5 text-slate-700">
+                            <option value="ALL">Filter: All Days (সব দিন)</option>
+                            <option value="শনিবার (Saturday)">শনিবার (Saturday)</option>
+                            <option value="রবিবার (Sunday)">রবিবার (Sunday)</option>
+                            <option value="সোমবার (Monday)">সোমবার (Monday)</option>
+                            <option value="মঙ্গলবার (Tuesday)">মঙ্গলবার (Tuesday)</option>
+                            <option value="বুধবার (Wednesday)">বুধবার (Wednesday)</option>
+                            <option value="বৃহস্পতিবার (Thursday)">বৃহস্পতিবার (Thursday)</option>
+                            <option value="শুক্রবার (Friday)">শুক্রবার (Friday)</option>
+                            <option value="প্রতিদিন (Daily)">প্রতিদিন (Daily)</option>
+                        </select>
+                    </div>
+
+                    <div class="overflow-x-auto rounded-xl border border-slate-200">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-teal-800 text-white text-xs font-en">
+                                    <th class="p-3">Done</th>
+                                    <th class="p-3">Day</th>
+                                    <th class="p-3">Time / Shift</th>
+                                    <th class="p-3">Category</th>
+                                    <th class="p-3">Ward / Subject</th>
+                                    <th class="p-3 text-center no-print">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="routine-tbody" class="divide-y divide-slate-200 text-xs md:text-sm bg-white"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- ================= 4. SMART CALCULATOR (CLEAN, ORGANIZED & ACCURATE) ================= -->
+        <div id="clinical" class="tab-content hidden space-y-6">
+            
+            <!-- Clean Header & Responsive Study Timer -->
+            <div class="bg-white p-5 md:p-6 rounded-2xl shadow-md border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <span class="bg-teal-50 text-teal-800 border border-teal-200 text-[11px] font-en font-bold px-2.5 py-0.5 rounded-md uppercase">Clinical &amp; WHO Standard</span>
+                    <h2 class="text-xl md:text-2xl font-extrabold text-slate-800 mt-1.5 font-en">🧮 Smart Calculator</h2>
+                    <p class="text-xs md:text-sm text-slate-600 mt-0.5">নির্ভুল ক্লিনিক্যাল সূত্রে IV Drip Rate, Drug Dose, EDD এবং BMI নির্ণয়</p>
+                </div>
+
+                <!-- Compact Responsive Pomodoro Timer (Fits small mobile screens cleanly) -->
+                <div class="w-full md:w-auto bg-slate-900 text-white p-3.5 rounded-xl flex flex-wrap justify-between items-center gap-3">
+                    <div class="flex items-center gap-2">
+                        <span class="text-lg">⏱️</span>
+                        <div>
+                            <span class="text-[10px] uppercase tracking-wider text-teal-300 font-en font-bold block leading-none">Study Timer</span>
+                            <span class="text-xl font-extrabold font-en leading-tight" id="pomo-display">25:00</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-1.5 text-xs font-en">
+                        <button onclick="startPomo()" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 px-3 py-1.5 rounded-lg font-extrabold">Start</button>
+                        <button onclick="pausePomo()" class="bg-amber-400 hover:bg-amber-300 text-slate-950 px-2.5 py-1.5 rounded-lg font-bold">Pause</button>
+                        <button onclick="resetPomo()" class="bg-slate-700 hover:bg-slate-600 text-white px-2.5 py-1.5 rounded-lg font-bold">Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4 Organized Calculators Grid -->
+            <div class="grid md:grid-cols-2 gap-5">
+
+                <!-- 1. IV Drip Rate Calculator -->
+                <div class="bg-white p-5 md:p-6 rounded-2xl shadow-md border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-2.5 border-b border-slate-100 pb-3 mb-4">
+                            <span class="bg-teal-100 text-teal-800 p-2 rounded-xl text-xl">💧</span>
+                            <div>
+                                <h3 class="text-base md:text-lg font-extrabold text-slate-800 font-en">IV Drip Rate Calculator</h3>
+                                <p class="text-[11px] text-slate-500 font-en">Formula: (Volume mL × Drop Factor) ÷ Time (min)</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3 text-xs md:text-sm">
+                            <div>
+                                <label class="font-bold text-slate-700 block mb-1">মোট স্যালাইন (Total Volume in mL):</label>
+                                <input type="number" id="iv-vol" placeholder="Example: 1000" class="w-full p-2.5 border border-slate-300 rounded-xl font-en focus:border-teal-600 focus:outline-none">
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-2.5">
+                                <div>
+                                    <label class="font-bold text-slate-700 block mb-1">সময় (Duration):</label>
+                                    <input type="number" id="iv-time" placeholder="Example: 8" class="w-full p-2.5 border border-slate-300 rounded-xl font-en focus:border-teal-600 focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="font-bold text-slate-700 block mb-1">সময়ের একক (Unit):</label>
+                                    <select id="iv-time-unit" class="w-full p-2.5 border border-slate-300 rounded-xl bg-slate-50 font-en font-semibold">
+                                        <option value="hours">Hours (ঘণ্টা)</option>
+                                        <option value="minutes">Minutes (মিনিট)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="font-bold text-slate-700 block mb-1">ড্রপ ফ্যাক্টর (Drop Factor - gtt/mL):</label>
+                                <select id="iv-drop" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white font-en font-medium">
+                                    <option value="15">15 gtt/mL (Standard Macro Set)</option>
+                                    <option value="20">20 gtt/mL (Universal Infusion Set)</option>
+                                    <option value="60">60 gtt/mL (Microdrip / Pediatric Burette)</option>
+                                    <option value="10">10 gtt/mL (Blood Transfusion Set)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-slate-100">
+                        <button onclick="calcIV()" class="w-full bg-teal-700 hover:bg-teal-800 text-white font-bold py-2.5 rounded-xl transition font-en text-sm shadow">
+                            Calculate Flow Rate
+                        </button>
+                        <div id="iv-res" class="hidden p-3 bg-teal-50 border border-teal-300 rounded-xl text-teal-950 mt-3 text-xs md:text-sm leading-relaxed"></div>
+                    </div>
+                </div>
+
+                <!-- 2. Drug Dosage Calculator -->
+                <div class="bg-white p-5 md:p-6 rounded-2xl shadow-md border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-2.5 border-b border-slate-100 pb-3 mb-4">
+                            <span class="bg-indigo-100 text-indigo-800 p-2 rounded-xl text-xl">💉</span>
+                            <div>
+                                <h3 class="text-base md:text-lg font-extrabold text-slate-800 font-en">Drug Dosage Calculator</h3>
+                                <p class="text-[11px] text-slate-500 font-en">Formula: (Desired Dose ÷ Available Dose) × Quantity</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3 text-xs md:text-sm">
+                            <div class="grid grid-cols-3 gap-2">
+                                <div class="col-span-2">
+                                    <label class="font-bold text-slate-700 block mb-1">নির্দেশিত ডোজ (Desired):</label>
+                                    <input type="number" id="dg-des" placeholder="Example: 250" class="w-full p-2.5 border border-slate-300 rounded-xl font-en focus:border-indigo-600 focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="font-bold text-slate-700 block mb-1 font-en">Unit:</label>
+                                    <select id="dg-des-unit" class="w-full p-2.5 border border-slate-300 rounded-xl bg-slate-50 font-en font-bold">
+                                        <option value="mg">mg</option>
+                                        <option value="g">g</option>
+                                        <option value="mcg">mcg</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-3 gap-2">
+                                <div class="col-span-2">
+                                    <label class="font-bold text-slate-700 block mb-1">হাতে থাকা মাত্রা (On Hand):</label>
+                                    <input type="number" id="dg-have" placeholder="Example: 500" class="w-full p-2.5 border border-slate-300 rounded-xl font-en focus:border-indigo-600 focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="font-bold text-slate-700 block mb-1 font-en">Unit:</label>
+                                    <select id="dg-have-unit" class="w-full p-2.5 border border-slate-300 rounded-xl bg-slate-50 font-en font-bold">
+                                        <option value="mg">mg</option>
+                                        <option value="g">g</option>
+                                        <option value="mcg">mcg</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="font-bold text-slate-700 block mb-1">ওষুধের পরিমাণ (Quantity - mL / Tab):</label>
+                                <input type="number" id="dg-qty" value="1" placeholder="Example: 5 or 1" class="w-full p-2.5 border border-slate-300 rounded-xl font-en focus:border-indigo-600 focus:outline-none">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-slate-100">
+                        <button onclick="calcDrug()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-xl transition font-en text-sm shadow">
+                            Calculate Exact Dose
+                        </button>
+                        <div id="dg-res" class="hidden p-3 bg-indigo-50 border border-indigo-300 rounded-xl text-indigo-950 mt-3 text-xs md:text-sm leading-relaxed"></div>
+                    </div>
+                </div>
+
+                <!-- 3. Obstetric EDD Calculator -->
+                <div class="bg-white p-5 md:p-6 rounded-2xl shadow-md border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-2.5 border-b border-slate-100 pb-3 mb-4">
+                            <span class="bg-rose-100 text-rose-800 p-2 rounded-xl text-xl">🤰</span>
+                            <div>
+                                <h3 class="text-base md:text-lg font-extrabold text-slate-800 font-en">Obstetric EDD Calculator</h3>
+                                <p class="text-[11px] text-slate-500 font-en">Naegele's Rule: First Day of LMP + 280 Days (40 Weeks)</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3 text-xs md:text-sm">
+                            <div>
+                                <label class="font-bold text-slate-700 block mb-1">শেষ মাসিকের প্রথম দিন (First Day of LMP):</label>
+                                <input type="date" id="edd-lmp" class="w-full p-2.5 border border-slate-300 rounded-xl font-en focus:border-rose-600 focus:outline-none">
+                            </div>
+                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-600 leading-relaxed">
+                                Naegele's Rule অনুযায়ী সম্ভাব্য প্রসবের তারিখ (EDD), বর্তমান গর্ভকাল (Gestational Age) এবং Trimester নির্ণয় করে।
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-slate-100">
+                        <button onclick="calcEDD()" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-2.5 rounded-xl transition font-en text-sm shadow">
+                            Calculate EDD &amp; Gestation
+                        </button>
+                        <div id="edd-res" class="hidden p-3 bg-rose-50 border border-rose-300 rounded-xl text-rose-950 mt-3 text-xs md:text-sm leading-relaxed"></div>
+                    </div>
+                </div>
+
+                <!-- 4. BMI & Ideal Weight Calculator -->
+                <div class="bg-white p-5 md:p-6 rounded-2xl shadow-md border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-2.5 border-b border-slate-100 pb-3 mb-4">
+                            <span class="bg-emerald-100 text-emerald-800 p-2 rounded-xl text-xl">⚖️</span>
+                            <div>
+                                <h3 class="text-base md:text-lg font-extrabold text-slate-800 font-en">BMI Calculator</h3>
+                                <p class="text-[11px] text-slate-500 font-en">WHO Formula: Weight (kg) ÷ [Height (m)]²</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3 text-xs md:text-sm">
+                            <div>
+                                <label class="font-bold text-slate-700 block mb-1">দেহের ওজন (Weight in kg):</label>
+                                <input type="number" id="bmi-weight" placeholder="Example: 60" class="w-full p-2.5 border border-slate-300 rounded-xl font-en focus:border-emerald-600 focus:outline-none">
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <label class="font-bold text-slate-700">উচ্চতা (Height):</label>
+                                    <select id="bmi-height-mode" onchange="toggleBmiHeightMode()" class="text-xs font-en font-bold bg-slate-100 border border-slate-300 rounded-lg px-2 py-0.5">
+                                        <option value="cm">cm (সেন্টিমিটার)</option>
+                                        <option value="ft">Feet &amp; Inch (ফুট/ইঞ্চি)</option>
+                                    </select>
+                                </div>
+
+                                <div id="bmi-cm-wrapper">
+                                    <input type="number" id="bmi-height-cm" placeholder="Example: 165" class="w-full p-2.5 border border-slate-300 rounded-xl font-en focus:border-emerald-600 focus:outline-none">
+                                </div>
+
+                                <div id="bmi-ft-wrapper" class="hidden grid grid-cols-2 gap-2">
+                                    <input type="number" id="bmi-height-ft" placeholder="Feet (e.g. 5)" class="w-full p-2.5 border border-slate-300 rounded-xl font-en">
+                                    <input type="number" id="bmi-height-in" placeholder="Inch (e.g. 5)" class="w-full p-2.5 border border-slate-300 rounded-xl font-en">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-slate-100">
+                        <button onclick="calcBMI()" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 rounded-xl transition font-en text-sm shadow">
+                            Calculate BMI
+                        </button>
+                        <div id="bmi-res" class="hidden p-3 bg-emerald-50 border border-emerald-300 rounded-xl text-emerald-950 mt-3 text-xs md:text-sm leading-relaxed"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Custom Added Tools also visible inside Smart Calculator Tab -->
+            <div id="clinical-custom-tools-wrapper" class="hidden">
+                <h3 class="text-xl font-bold text-teal-900 mb-4 font-en">🛠️ Additional Tools</h3>
+                <div id="clinical-custom-tools-list" class="grid md:grid-cols-2 gap-6"></div>
+            </div>
+        </div>
+
+        <!-- ================= 5. POCKET GUIDE (10 FLASHCARDS & EXPANDED CLINICAL CHARTS) ================= -->
+        <div id="notes" class="tab-content hidden space-y-6">
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                
+                <!-- 10 Interactive Nursing Flashcards -->
+                <div class="bg-white p-5 md:p-6 rounded-2xl shadow-md border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <div>
+                                <span class="bg-teal-50 text-teal-800 text-[11px] font-en font-bold px-2.5 py-0.5 rounded border border-teal-200">Active Recall</span>
+                                <h3 class="text-lg md:text-xl font-extrabold text-slate-800 font-en mt-1">🗂️ Interactive Nursing Flashcards</h3>
+                            </div>
+                            <span id="card-count" class="bg-slate-800 text-white text-xs font-en font-bold px-3 py-1 rounded-xl">1 / 10</span>
+                        </div>
+
+                        <div onclick="flipCard()" class="bg-gradient-to-br from-teal-800 via-teal-700 to-emerald-800 text-white min-h-[220px] rounded-2xl flex flex-col justify-center items-center p-5 text-center cursor-pointer shadow-lg select-none transition transform hover:scale-[1.01]">
+                            <span class="text-[11px] uppercase tracking-wider bg-black/30 px-3 py-1 rounded-full mb-3 font-en font-bold" id="card-badge">❓ Clinical Question (Tap to Flip)</span>
+                            <p class="text-base md:text-lg font-bold leading-relaxed" id="card-text"></p>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-slate-100 flex justify-between items-center font-en">
+                        <button onclick="prevCard()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl font-bold text-xs transition">⬅️ Previous</button>
+                        <button onclick="flipCard()" class="bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 px-3 py-2 rounded-xl font-bold text-xs transition">🔄 Flip</button>
+                        <button onclick="nextCard()" class="bg-teal-700 hover:bg-teal-800 text-white px-4 py-2 rounded-xl font-bold text-xs shadow transition">Next ➡️</button>
+                    </div>
+                </div>
+
+                <!-- Vital Signs, Electrolytes & ABG Reference -->
+                <div class="bg-white p-5 md:p-6 rounded-2xl shadow-md border border-slate-200">
+                    <span class="bg-indigo-50 text-indigo-800 text-[11px] font-en font-bold px-2.5 py-0.5 rounded border border-indigo-200">Universal Reference</span>
+                    <h3 class="text-lg md:text-xl font-extrabold text-slate-800 mb-4 font-en mt-1">📋 Vital Signs, Electrolytes &amp; ABG</h3>
+                    
+                    <div class="space-y-2 text-xs">
+                        <div class="p-2.5 bg-slate-50 rounded-xl flex justify-between border border-slate-200">
+                            <span class="font-bold text-slate-700">Body Temp (Oral):</span>
+                            <span class="text-teal-800 font-bold font-en">37.0°C (98.6°F) [36.5°–37.5°C]</span>
+                        </div>
+                        <div class="p-2.5 bg-slate-50 rounded-xl flex justify-between border border-slate-200">
+                            <span class="font-bold text-slate-700">Adult HR, RR &amp; BP:</span>
+                            <span class="text-teal-800 font-bold font-en">HR: 60–100 | RR: 12–20 | BP: &lt;120/80</span>
+                        </div>
+                        <div class="p-2.5 bg-slate-50 rounded-xl flex justify-between border border-slate-200">
+                            <span class="font-bold text-slate-700">Newborn Vitals:</span>
+                            <span class="text-teal-800 font-bold font-en">HR: 120–160 bpm | RR: 30–60 /min</span>
+                        </div>
+                        <div class="p-2.5 bg-slate-50 rounded-xl flex justify-between border border-slate-200">
+                            <span class="font-bold text-slate-700">Serum Na⁺, K⁺ &amp; Ca²⁺:</span>
+                            <span class="text-indigo-800 font-bold font-en">Na⁺: 135–145 | K⁺: 3.5–5.0 | Ca²⁺: 8.5–10.5</span>
+                        </div>
+                        <div class="p-2.5 bg-slate-50 rounded-xl flex justify-between border border-slate-200">
+                            <span class="font-bold text-slate-700">Normal ABG Values:</span>
+                            <span class="text-indigo-800 font-bold font-en">pH: 7.35–7.45 | PaCO₂: 35–45 | HCO₃⁻: 22–26</span>
+                        </div>
+                        <div class="p-2.5 bg-slate-50 rounded-xl flex justify-between border border-slate-200">
+                            <span class="font-bold text-slate-700">Hb, Platelets &amp; WBC:</span>
+                            <span class="text-teal-800 font-bold font-en">Hb: 12–17.5 | Plt: 1.5–4.5L | WBC: 4.5–11k</span>
+                        </div>
+                        <div class="p-2.5 bg-slate-50 rounded-xl flex justify-between border border-slate-200">
+                            <span class="font-bold text-slate-700">Fasting Glucose &amp; Cr:</span>
+                            <span class="text-teal-800 font-bold font-en">FBS: 3.9–5.5 mmol/L | Cr: 0.6–1.2 mg/dL</span>
+                        </div>
+                        <div class="p-2.5 bg-rose-50 rounded-xl flex justify-between border border-rose-200">
+                            <span class="font-bold text-rose-900">Therapeutic Levels:</span>
+                            <span class="text-rose-800 font-bold font-en">Lithium: 0.6–1.2 mEq/L | Digoxin: 0.5–2.0 ng/mL</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Second Row: IV Cannula Color Chart, Emergency Antidotes & Medical Abbreviations -->
+            <div class="grid md:grid-cols-3 gap-6">
+
+                <div class="bg-white p-5 md:p-6 rounded-2xl shadow-md border border-slate-200">
+                    <h4 class="text-base font-extrabold text-slate-800 mb-3 font-en">💉 Standard IV Cannula Chart</h4>
+                    <div class="space-y-2 text-xs font-en">
+                        <div class="p-2 rounded-lg bg-orange-50 border border-orange-200 flex justify-between">
+                            <span class="font-extrabold text-orange-800">14G (Orange)</span>
+                            <span class="text-slate-700 font-semibold">~240 mL/min • Rapid Fluid</span>
+                        </div>
+                        <div class="p-2 rounded-lg bg-slate-100 border border-slate-300 flex justify-between">
+                            <span class="font-extrabold text-slate-700">16G (Grey)</span>
+                            <span class="text-slate-700 font-semibold">~180 mL/min • Major Surgery</span>
+                        </div>
+                        <div class="p-2 rounded-lg bg-emerald-50 border border-emerald-200 flex justify-between">
+                            <span class="font-extrabold text-emerald-800">18G (Green)</span>
+                            <span class="text-slate-700 font-semibold">~90 mL/min • Blood Transfusion</span>
+                        </div>
+                        <div class="p-2 rounded-lg bg-pink-50 border border-pink-200 flex justify-between">
+                            <span class="font-extrabold text-pink-700">20G (Pink)</span>
+                            <span class="text-slate-700 font-semibold">~60 mL/min • Routine Adult IV</span>
+                        </div>
+                        <div class="p-2 rounded-lg bg-sky-50 border border-sky-200 flex justify-between">
+                            <span class="font-extrabold text-sky-800">22G (Blue)</span>
+                            <span class="text-slate-700 font-semibold">~36 mL/min • Children / Elderly</span>
+                        </div>
+                        <div class="p-2 rounded-lg bg-amber-50 border border-amber-200 flex justify-between">
+                            <span class="font-extrabold text-amber-700">24G (Yellow)</span>
+                            <span class="text-slate-700 font-semibold">~20 mL/min • Neonates / Infants</span>
+                        </div>
+                        <div class="p-2 rounded-lg bg-purple-50 border border-purple-200 flex justify-between">
+                            <span class="font-extrabold text-purple-800">26G (Violet)</span>
+                            <span class="text-slate-700 font-semibold">~13 mL/min • Premature Babies</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 md:p-6 rounded-2xl shadow-md border border-slate-200">
+                    <h4 class="text-base font-extrabold text-slate-800 mb-3 font-en">🧪 Essential Clinical Antidotes</h4>
+                    <div class="space-y-2 text-xs">
+                        <div class="p-2 bg-slate-50 rounded-lg border flex justify-between font-en">
+                            <span class="font-bold text-slate-700">Paracetamol:</span>
+                            <span class="font-extrabold text-teal-800">N-Acetylcysteine (NAC)</span>
+                        </div>
+                        <div class="p-2 bg-slate-50 rounded-lg border flex justify-between font-en">
+                            <span class="font-bold text-slate-700">Opioids (Morphine):</span>
+                            <span class="font-extrabold text-teal-800">Naloxone (Narcan)</span>
+                        </div>
+                        <div class="p-2 bg-slate-50 rounded-lg border flex justify-between font-en">
+                            <span class="font-bold text-slate-700">Heparin Overdose:</span>
+                            <span class="font-extrabold text-teal-800">Protamine Sulfate</span>
+                        </div>
+                        <div class="p-2 bg-slate-50 rounded-lg border flex justify-between font-en">
+                            <span class="font-bold text-slate-700">Warfarin:</span>
+                            <span class="font-extrabold text-teal-800">Vitamin K₁ (Phytonadione)</span>
+                        </div>
+                        <div class="p-2 bg-slate-50 rounded-lg border flex justify-between font-en">
+                            <span class="font-bold text-slate-700">MgSO₄ Toxicity:</span>
+                            <span class="font-extrabold text-teal-800">10% Calcium Gluconate</span>
+                        </div>
+                        <div class="p-2 bg-slate-50 rounded-lg border flex justify-between font-en">
+                            <span class="font-bold text-slate-700">Benzodiazepines:</span>
+                            <span class="font-extrabold text-teal-800">Flumazenil</span>
+                        </div>
+                        <div class="p-2 bg-slate-50 rounded-lg border flex justify-between font-en">
+                            <span class="font-bold text-slate-700">OPC Poisoning:</span>
+                            <span class="font-extrabold text-teal-800">Atropine + Pralidoxime</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 md:p-6 rounded-2xl shadow-md border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <h4 class="text-base font-extrabold text-slate-800 mb-3 font-en">📖 Medical Orders &amp; Scales</h4>
+                        <div class="p-3 bg-amber-50 rounded-xl border border-amber-200 text-xs text-slate-700 leading-relaxed mb-3">
+                            <span class="font-bold block text-amber-900 mb-1 font-en">Prescription Abbreviations:</span>
+                            <b>OD:</b> দিনে ১ বার | <b>BD (BID):</b> দিনে ২ বার (১২ ঘণ্টা অন্তর) | <b>TDS (TID):</b> দিনে ৩ বার (৮ ঘণ্টা অন্তর) | <b>QDS (QID):</b> দিনে ৪ বার (৬ ঘণ্টা অন্তর) | <b>HS:</b> রাতে ঘুমানোর সময় | <b>AC:</b> খাবারের আগে | <b>PC:</b> খাবারের পরে | <b>PRN / SOS:</b> প্রয়োজন হলে | <b>STAT:</b> তাৎক্ষণিক এক্ষুনি দিতে হবে | <b>NPO:</b> মুখে সব খাবার ও পানি নিষেধ।
+                        </div>
+                        <div class="p-3 bg-teal-50 rounded-xl border border-teal-200 text-xs text-slate-700 leading-relaxed">
+                            <span class="font-bold block text-teal-900 mb-1 font-en">GCS &amp; APGAR Quick Reference:</span>
+                            • <b>GCS (3–15):</b> Eye (4) + Verbal (5) + Motor (6). Coma ≤ 8.<br>
+                            • <b>APGAR (0–10):</b> 7–10 Normal, 4–6 Moderate depression, 0–3 Severe distress.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ================= 6. ADMIN PANEL (SECRET UNLOCK & PASSWORD PROTECTED) ================= -->
+        <div id="admin" class="tab-content hidden">
+            
+            <!-- Admin Login Box -->
+            <div id="admin-login-box" class="max-w-md mx-auto bg-white p-6 rounded-2xl shadow-md border border-slate-200 text-center">
+                <div class="text-4xl mb-2">🔐</div>
+                <h2 class="text-xl font-bold text-slate-800 font-en">NurseHub BD Admin</h2>
+                <p class="text-xs text-slate-500 mt-1 mb-4"> </p>
+                <input type="password" id="admin-pass-input" placeholder="Enter Admin Password" class="w-full p-3 rounded-xl border border-slate-300 text-center font-en text-sm mb-3">
+                <div class="flex gap-2 font-en">
+                    <button onclick="hideAdminMenuAndExit()" class="w-1/3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl text-xs">🙈 Hide Admin</button>
+                    <button onclick="verifyAdmin()" class="w-2/3 bg-teal-700 hover:bg-teal-800 text-white font-bold py-2.5 rounded-xl text-sm shadow">Login to Dashboard</button>
+                </div>
+            </div>
+
+            <!-- Main Admin Dashboard -->
+            <div id="admin-dashboard" class="hidden space-y-8">
+
+                <!-- Global Save / Export & Hide Admin Bar -->
+                <div class="bg-slate-900 text-white p-4 rounded-2xl shadow flex flex-wrap justify-between items-center gap-3">
+                    <div>
+                        <h3 class="font-bold text-sm md:text-base font-en text-teal-300">💾 Master File Exporter &amp; Security Control</h3>
+                        <p class="text-xs text-slate-300">প্রশ্ন বা সেটিংস পরিবর্তন শেষে নতুন index.html ডাউনলোড করুন অথবা কাজ শেষে মেনুবার থেকে Admin বাটনটি লুকিয়ে ফেলুন</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2 font-en shrink-0">
+                        <button onclick="hideAdminMenuAndExit()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-3.5 py-2.5 rounded-xl text-xs shadow transition">
+                            🙈 Hide Admin
+                        </button>
+                        <button onclick="downloadUpdatedHtmlFile()" class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold px-4 py-2.5 rounded-xl text-xs shadow transition">
+                            💾 Download index.html
+                        </button>
+                    </div>
+                </div>
+
+                <!-- HOMEPAGE TOOLS HIDDEN / VISIBLE CONTROL -->
+                <div class="bg-white p-6 rounded-2xl shadow-md border border-emerald-200">
+                    <div class="flex flex-wrap justify-between items-center gap-2 border-b pb-3 mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-emerald-900 font-en">👁️ Homepage Tools</h3>
+                            <p class="text-xs text-slate-600"> </p>
+                        </div>
+                        <button onclick="makeAllHomeToolsVisible()" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 px-3 py-1.5 rounded-lg text-xs font-en font-bold">
+                            👁️ Make All Visible
+                        </button>
+                    </div>
+
+                    <div id="admin-core-visibility-list" class="grid md:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+                </div>
+                
+                <!-- SECTION A: CREATE & SAVE EXAM TO HOMEPAGE -->
+                <div class="bg-white p-6 rounded-2xl shadow-md border border-teal-200">
+                    <div class="flex flex-wrap justify-between items-center gap-2 border-b pb-3 mb-5">
+                        <div>
+                            <h3 class="text-xl font-bold text-teal-800 font-en">⚡ Create Exam &amp; Publish to Homepage</h3>
+                            <p class="text-xs text-slate-600">এখান থেকে প্রশ্ন (True/False এবং MCQ) ও নেগেটিভ মার্কিং সেট করে সরাসরি হোমপেজে সেভ করুন</p>
+                        </div>
+                        <span class="bg-teal-100 text-teal-800 text-xs font-en font-bold px-3 py-1 rounded-full" id="total-exams-badge">Saved Exams: 0</span>
+                    </div>
+
+                    <!-- Target Course, Exam Title & Admin Negative Marking Setting (Removed -0.20 option) -->
+                    <div class="grid md:grid-cols-3 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200 mb-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1 font-en">Select Target Course</label>
+                            <select id="adm-course" class="w-full p-2.5 rounded-lg border border-slate-300 bg-white text-sm font-en font-semibold">
+                                <option value="Academic">Academic</option>
+                                <option value="BNMC Comprehensive Licensing">BNMC Comprehensive Licensing</option>
+                                <option value="BPSC Job Prep.">BPSC Job Prep.</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1 font-en">Exam Title / Topic Name *</label>
+                            <input type="text" id="adm-exam-title" placeholder="Example: Psychiatric Nursing Model Test" class="w-full p-2.5 rounded-lg border border-slate-300 text-sm font-en">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1 font-en">Negative Marking (Admin Control)</label>
+                            <select id="adm-neg-mark" class="w-full p-2.5 rounded-lg border border-slate-300 bg-white text-sm font-en font-bold text-teal-900">
+                                <option value="0">🚫 No Negative Marking (0.00)</option>
+                                <option value="0.5" selected>✅ Enabled: -0.50 per wrong (BPSC Standard)</option>
+                                <option value="0.25">✅ Enabled: -0.25 per wrong</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Bulk Copy-Paste & Coding Textarea -->
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 mb-4">
+                        <div class="flex flex-wrap justify-between items-center gap-2 mb-2">
+                            <label class="text-xs font-bold text-slate-700 font-en">Paste Questions Here (Supports True/False Circles &amp; MCQ):</label>
+                            <div class="flex flex-wrap gap-1.5 font-en">
+                                <button onclick="loadBulkSample('tf')" class="bg-teal-50 hover:bg-teal-100 text-teal-800 px-2.5 py-1 rounded text-[11px] font-bold border border-teal-200">⭕ True/False Sample</button>
+                                <button onclick="loadBulkSample('text')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 py-1 rounded text-[11px] font-bold border">📋 MCQ Sample</button>
+                                <button onclick="loadBulkSample('json')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 py-1 rounded text-[11px] font-bold border">💻 JSON Sample</button>
+                            </div>
+                        </div>
+
+                        <textarea id="bulk-q-input" rows="8" placeholder="এখানে True/False অথবা MCQ প্রশ্ন একসাথে পেস্ট করুন..." class="w-full p-3 rounded-xl border border-slate-300 focus:border-teal-600 focus:outline-none text-xs md:text-sm font-mono leading-relaxed"></textarea>
+
+                        <div class="flex flex-wrap gap-2.5 mt-3 font-en">
+                            <button onclick="publishExamToHomepage()" class="bg-teal-700 hover:bg-teal-800 text-white font-bold px-5 py-3 rounded-xl text-xs md:text-sm shadow transition">
+                                ⚡ Save &amp; Publish Exam to Homepage
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Manage Saved Homepage Exams -->
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <h4 class="font-bold text-slate-800 text-sm font-en mb-1">🗂️ Saved Exams on Homepage (Delete / Copy Short Link)</h4>
+                        <div id="admin-exam-list" class="space-y-2.5 mt-2"></div>
+                        <input type="text" id="generated-link-box" readonly placeholder="Short exam link will appear here..." class="hidden w-full mt-3 p-2.5 bg-white border border-teal-300 rounded-lg text-xs font-en text-slate-700">
+                    </div>
+                </div>
+
+                <!-- SECTION B: ADDED NEW TOOLS (CUSTOM TOOL BUILDER) -->
+                <div class="bg-white p-6 rounded-2xl shadow-md border border-indigo-200">
+                    <div class="flex flex-wrap justify-between items-center gap-2 border-b pb-3 mb-5">
+                        <div>
+                            <h3 class="text-xl font-bold text-indigo-900 font-en">🛠️ Added New Tools</h3>
+                            <p class="text-xs text-slate-600"> </p>
+                        </div>
+                        <span class="bg-indigo-100 text-indigo-800 text-xs font-en font-bold px-3 py-1 rounded-full" id="total-tools-badge">Added Tools: 0</span>
+                    </div>
+
+                    <div class="grid md:grid-cols-3 gap-4 bg-indigo-50/60 p-4 rounded-xl border border-indigo-100 mb-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1 font-en">Tool Title / Name *</label>
+                            <input type="text" id="tool-title-input" placeholder="Example: Pediatric Dose Calculator" class="w-full p-2.5 rounded-lg border border-slate-300 bg-white text-sm font-en">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1 font-en">Tool Icon (Emoji)</label>
+                            <input type="text" id="tool-icon-input" value="🧮" placeholder="Example: ⚖️ or 🧠" class="w-full p-2.5 rounded-lg border border-slate-300 bg-white text-sm">
+                        </div>
+                        <div class="flex items-center pt-5">
+                            <label class="flex items-center gap-2 cursor-pointer text-sm font-bold text-indigo-950 font-en">
+                                <input type="checkbox" id="tool-show-home" checked class="w-4 h-4 accent-indigo-600">
+                                <span>Visible on Homepage</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 mb-4">
+                        <div class="flex flex-wrap justify-between items-center gap-2 mb-2">
+                            <label class="text-xs font-bold text-slate-700 font-en">Paste Tool Code Here (HTML, CSS &amp; JavaScript):</label>
+                            <div class="flex gap-1.5 font-en">
+                                <button onclick="loadSampleToolCode('bmi')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-2.5 py-1 rounded text-[11px] font-bold border border-indigo-200">📋 Sample 1: Parkland Burn Fluid</button>
+                                <button onclick="loadSampleToolCode('gcs')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-2.5 py-1 rounded text-[11px] font-bold border border-indigo-200">📋 Sample 2: GCS Scale</button>
+                            </div>
+                        </div>
+
+                        <textarea id="tool-code-input" rows="7" placeholder="এখানে আপনার নতুন টুলের কোড (HTML/JS) পেস্ট করুন..." class="w-full p-3 rounded-xl border border-slate-300 focus:border-indigo-600 focus:outline-none text-xs md:text-sm font-mono leading-relaxed"></textarea>
+
+                        <div class="mt-3 font-en">
+                            <button onclick="addNewCustomTool()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-5 py-3 rounded-xl text-xs md:text-sm shadow transition">
+                                ➕ Save &amp; Add Tool to Homepage
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <h4 class="font-bold text-slate-800 text-sm font-en mb-1">⚙️ Manage Added Tools</h4>
+                        <div id="admin-tools-list" class="space-y-2.5 mt-2"></div>
+                    </div>
+                </div>
+
+                <!-- SECTION C: VISITOR REVIEWS & PROBLEM REPORTS (ONLY ADMIN CAN SEE) -->
+                <div class="bg-white p-6 rounded-2xl shadow-md border border-amber-200">
+                    <div class="flex flex-wrap justify-between items-center gap-2 border-b pb-3 mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-amber-900 font-en">💬 Feedback Inbox (Reviews &amp; Problem Reports)</h3>
+                            <p class="text-xs text-slate-600"> </p>
+                        </div>
+                        <div class="flex items-center gap-2 font-en">
+                            <span id="admin-feedback-count" class="bg-amber-100 text-amber-900 text-xs font-bold px-3 py-1 rounded-full">Messages: 0</span>
+                            <button onclick="clearVisitorFeedback()" class="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold px-3 py-1.5 rounded-lg text-xs">🗑️ Clear All</button>
+                        </div>
+                    </div>
+
+                    <div id="admin-feedback-list" class="space-y-3"></div>
+                </div>
+
+                <!-- SECTION D: STUDENT RESULTS & CLOUD SYNC -->
+                <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-200">
+                    <div class="flex flex-wrap justify-between items-center gap-2 border-b pb-3 mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-teal-800 font-en">📊 Student Exam Results</h3>
+                            <p class="text-xs text-slate-600">শিক্ষার্থীদের নাম, সেশন, কোর্স, পরীক্ষার নাম, প্রাপ্ত নম্বর এবং কত সময়ে শেষ করেছে তার তালিকা</p>
+                        </div>
+                        <div class="flex gap-2 font-en">
+                            <button onclick="exportResultsCSV()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-lg text-xs">📥 Download Excel/CSV</button>
+                            <button onclick="clearAdminResults()" class="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold px-3 py-1.5 rounded-lg text-xs">🗑️ Clear Log</button>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 mb-4">
+                        <label class="block text-xs font-bold text-slate-700 mb-1 font-en">☁️ Google Sheet Live Sync URL:</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="webhook-url-input" placeholder="Paste your Google Script Web App URL here (Optional)" class="w-full p-2 rounded-lg border border-slate-300 text-xs font-en">
+                            <button onclick="saveWebhookUrl()" class="bg-slate-800 text-white px-4 py-2 rounded-lg text-xs font-en font-bold shrink-0">Save URL</button>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse rounded-xl overflow-hidden border border-slate-200">
+                            <thead>
+                                <tr class="bg-slate-800 text-white text-xs font-en">
+                                    <th class="p-3">Candidate Name</th>
+                                    <th class="p-3">Session</th>
+                                    <th class="p-3">Course</th>
+                                    <th class="p-3">Exam Title</th>
+                                    <th class="p-3">Score</th>
+                                    <th class="p-3">Time Taken</th>
+                                    <th class="p-3">Submitted At</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-results-tbody" class="divide-y divide-slate-200 text-xs font-en bg-white"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <!-- ================= ULTRA-SECURE JAVASCRIPT ENGINE (PART 3) ================= -->
+    <script>
+        // ================= 0. DOMAIN LOCK & DATA ENCRYPTION ENGINE =================
+        (function _verifyAuthorizedDomain() {
+            const h = (window.location.hostname || '').toLowerCase();
+            const p = window.location.protocol || '';
+            const isAllowed =
+                h === '' ||
+                h === 'localhost' ||
+                h === '127.0.0.1' ||
+                h.includes('nursehubbd.github.io') ||
+                p === 'file:' ||
+                p === 'content:' ||
+                p === 'blob:' ||
+                p === 'data:';
+
+            if (!isAllowed) {
+                document.body.innerHTML = `
+                    <div style="padding:40px;text-align:center;font-family:sans-serif;background:#0f172a;color:#fff;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;">
+                        <h1 style="color:#f43f5e;font-size:28px;margin-bottom:10px;">⚠️ Security Alert: Unauthorized Domain!</h1>
+                        <p style="color:#cbd5e1;max-width:500px;line-height:1.6;">এই ওয়েবসাইটের কোড ও কন্টেন্ট <b>NurseHub BD (nursehubbd.github.io)</b>-এর নিজস্ব সম্পত্তি। অনুমতি ছাড়া অন্য কোনো ডোমেইনে এটি ব্যবহার করা সম্পূর্ণ নিষিদ্ধ।</p>
+                    </div>
+                `;
+                throw new Error("Unauthorized Domain Blocked.");
+            }
+        })();
+
+
+        // Universal UTF-8 Safe Cipher for Question Bank Encryption/Decryption
+        function _encData(obj) {
+            const str = encodeURIComponent(JSON.stringify(obj));
+            let out = '';
+            for (let i = 0; i < str.length; i++) {
+                out += String.fromCharCode(str.charCodeAt(i) ^ 19);
+            }
+            return btoa(out);
+        }
+
+        function _decData(b64) {
+            try {
+                const raw = atob(b64);
+                let out = '';
+                for (let i = 0; i < raw.length; i++) {
+                    out += String.fromCharCode(raw.charCodeAt(i) ^ 19);
+                }
+                return JSON.parse(decodeURIComponent(out));
+            } catch (e) {
+                return [];
+            }
+        }
+
+        // 1. Navigation Controller
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+            const target = document.getElementById(tabId);
+            if (target) target.classList.remove('hidden');
+            
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active-nav'));
+            const navBtn = document.getElementById('nav-' + tabId);
+            if (navBtn) navBtn.classList.add('active-nav');
+            
+            document.getElementById('logo-dropdown-menu')?.classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 2. Logo Tap Menu (Feedback) & Secret 5-Tap on 'BD' for Admin
+        let bdTapCount = 0;
+        let bdTapTimer = null;
+
+        function toggleLogoMenu(event) {
+            event.stopPropagation();
+            const menu = document.getElementById('logo-dropdown-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        document.addEventListener('click', () => {
+            document.getElementById('logo-dropdown-menu')?.classList.add('hidden');
+        });
+
+        function handleBdSecretTap(event) {
+            event.stopPropagation();
+            document.getElementById('logo-dropdown-menu')?.classList.add('hidden');
+
+            bdTapCount++;
+            clearTimeout(bdTapTimer);
+
+            if (bdTapCount >= 5) {
+                bdTapCount = 0;
+                const lockUntil = parseInt(localStorage.getItem('nh_admin_lock_until') || '0');
+                if (Date.now() < lockUntil) {
+                    const waitMin = Math.ceil((lockUntil - Date.now()) / 60000);
+                    alert(`⛔ অতিরিক্ত ভুল পাসওয়ার্ড দেওয়ার কারণে অ্যাডমিন প্যানেল ${waitMin} মিনিটের জন্য লক করা হয়েছে!`);
+                    return;
+                }
+                const adminNavBtn = document.getElementById('nav-admin');
+                adminNavBtn.classList.remove('hidden');
+                showTab('admin');
+                alert("🔓 Secret Admin Mode Unlocked!");
+            } else {
+                bdTapTimer = setTimeout(() => {
+                    if (bdTapCount > 0 && bdTapCount < 5) {
+                        showTab('home');
+                    }
+                    bdTapCount = 0;
+                }, 1200);
+            }
+        }
+
+        function hideAdminMenuAndExit() {
+            isAdminLoggedIn = false;
+            document.body.classList.remove('admin-unlocked');
+            document.getElementById('admin-pass-input').value = '';
+            document.getElementById('admin-dashboard').classList.add('hidden');
+            document.getElementById('admin-login-box').classList.remove('hidden');
+            document.getElementById('nav-admin').classList.add('hidden');
+            showTab('home');
+        }
+
+        // Feedback Modal Functions (Review & Report a Problem)
+        function openFeedbackModal(type) {
+            document.getElementById('logo-dropdown-menu').classList.add('hidden');
+            const modal = document.getElementById('feedback-modal');
+            const header = document.getElementById('feedback-modal-header');
+            const icon = document.getElementById('fb-modal-icon');
+            const title = document.getElementById('fb-modal-title');
+            const ratingWrap = document.getElementById('fb-rating-wrapper');
+            const msgLabel = document.getElementById('fb-message-label');
+
+            document.getElementById('fb-type-input').value = type;
+
+            if (type === 'Review') {
+                header.className = "bg-teal-800 text-white px-5 py-4 flex justify-between items-center";
+                icon.innerText = "⭐";
+                title.innerText = "Submit a Review";
+                ratingWrap.classList.remove('hidden');
+                msgLabel.innerHTML = `Your Review <span class="text-rose-600">*</span>`;
+            } else {
+                header.className = "bg-rose-700 text-white px-5 py-4 flex justify-between items-center";
+                icon.innerText = "⚠️";
+                title.innerText = "Report a Problem";
+                ratingWrap.classList.add('hidden');
+                msgLabel.innerHTML = `Describe the Problem / Issue <span class="text-rose-600">*</span>`;
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeFeedbackModal() {
+            document.getElementById('feedback-modal').classList.add('hidden');
+        }
+
+        function submitVisitorFeedback() {
+            const type = document.getElementById('fb-type-input').value;
+            const name = document.getElementById('fb-visitor-name').value.trim();
+            const rating = document.getElementById('fb-visitor-rating').value;
+            const message = document.getElementById('fb-visitor-message').value.trim();
+
+            if (!name || !message) {
+                alert("⚠️ সাবমিট করার জন্য অবশ্যই আপনার নাম এবং মতামত/সমস্যা লিখতে হবে!");
+                return;
+            }
+
+            const feedbackItem = {
+                id: "fb_" + Date.now(),
+                type: type,
+                name: name,
+                rating: type === 'Review' ? rating : '⚠️ Issue Report',
+                message: message,
+                date: new Date().toLocaleString('en-BD')
+            };
+
+            let feedbackList = JSON.parse(localStorage.getItem('nurseHubVisitorFeedback_v1')) || [];
+            feedbackList.unshift(feedbackItem);
+            localStorage.setItem('nurseHubVisitorFeedback_v1', JSON.stringify(feedbackList));
+
+            const webhookUrl = localStorage.getItem('nurseHubWebhookUrl');
+            if (webhookUrl) {
+                fetch(webhookUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(feedbackItem)
+                }).catch(() => {});
+            }
+
+            document.getElementById('fb-visitor-name').value = '';
+            document.getElementById('fb-visitor-message').value = '';
+            closeFeedbackModal();
+            if (isAdminLoggedIn) renderAdminFeedback();
+            alert(`✅ ধন্যবাদ ${name}! আপনার মতামত সফলভাবে জমা হয়েছে।`);
+        }
+
+        function renderAdminFeedback() {
+            const list = JSON.parse(localStorage.getItem('nurseHubVisitorFeedback_v1')) || [];
+            const container = document.getElementById('admin-feedback-list');
+            const badge = document.getElementById('admin-feedback-count');
+            if (!container || !badge) return;
+
+            badge.innerText = `Messages: ${list.length}`;
+            container.innerHTML = '';
+
+            if (list.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-400 p-4 text-center bg-slate-50 rounded-xl border">এখনো কোনো রিভিউ বা সমস্যা জমা পড়েনি।</p>`;
+                return;
+            }
+
+            list.forEach((item, idx) => {
+                const isReview = item.type === 'Review';
+                container.innerHTML += `
+                    <div class="p-4 rounded-xl border ${isReview ? 'bg-teal-50/40 border-teal-200' : 'bg-rose-50/50 border-rose-200'} flex justify-between items-start gap-3">
+                        <div class="space-y-1">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="px-2.5 py-0.5 rounded text-[11px] font-en font-extrabold ${isReview ? 'bg-teal-700 text-white' : 'bg-rose-600 text-white'}">${item.type}</span>
+                                <span class="font-bold text-slate-800 text-sm font-en">👤 ${item.name}</span>
+                                <span class="text-xs font-en text-amber-700 font-bold">${item.rating}</span>
+                                <span class="text-[11px] text-slate-400 font-en">• ${item.date}</span>
+                            </div>
+                            <p class="text-sm text-slate-700 leading-relaxed pt-1">${item.message}</p>
+                        </div>
+                        <button onclick="deleteFeedbackItem(${idx})" class="text-rose-600 hover:bg-rose-100 px-2.5 py-1 rounded-lg text-xs font-bold shrink-0">✖</button>
+                    </div>
+                `;
+            });
+        }
+
+        function deleteFeedbackItem(index) {
+            let list = JSON.parse(localStorage.getItem('nurseHubVisitorFeedback_v1')) || [];
+            list.splice(index, 1);
+            localStorage.setItem('nurseHubVisitorFeedback_v1', JSON.stringify(list));
+            renderAdminFeedback();
+        }
+
+        function clearVisitorFeedback() {
+            if (confirm("আপনি কি সব রিভিউ এবং রিপোর্ট মুছে ফেলতে চান?")) {
+                localStorage.removeItem('nurseHubVisitorFeedback_v1');
+                renderAdminFeedback();
+            }
+        }
+
+        // 3. Baked-in Data Banks (Automatically Encrypted on Export)
+        /*__EXAM_BANK_START__*/
+        const defaultExams = [
+            {
+                id: "exam_psych_01",
+                title: "Psychiatric Nursing Model Test",
+                cat: "Academic",
+                negMark: 0,
+                createdAt: "29 Sep 2026",
+                questions: [
+                    {
+                        type: "tf",
+                        cat: "Academic",
+                        q: "Psychiatric emergency are –",
+                        options: ["a. Suicidal tendency", "b. Delirium", "c. Violence", "d. Coma", "e. Drug poisoning"],
+                        tfAns: ["T", "F", "T", "F", "F"],
+                        exp: "Suicidal tendency ও Violence হলো সরাসরি Psychiatric emergency; বাকিগুলো (Delirium, Coma, Drug poisoning) মূলত Medical emergency।"
+                    },
+                    {
+                        type: "tf",
+                        cat: "Academic",
+                        q: "Scopes of community psychiatric health nursing are –",
+                        options: ["a. Mental health promotion", "b. Avoid primary health care services", "c. Rehabilitation services", "d. Financial support", "e. Psychosocial support"],
+                        tfAns: ["T", "F", "T", "F", "T"],
+                        exp: "মানসিক স্বাস্থ্য উন্নয়ন (Promotion), পুনর্বাসন (Rehabilitation) ও মনোসামাজিক সহায়তা (Psychosocial support) কমিউনিটি সাইকিয়াট্রিক নার্সিংয়ের অন্তর্ভুক্ত।"
+                    },
+                    {
+                        type: "tf",
+                        cat: "Academic",
+                        q: "Phases of nurse–patient relationship are –",
+                        options: ["a. Pre-interaction phase", "b. Judgmental phase", "c. Working phase", "d. Experimental phase", "e. Orientation phase"],
+                        tfAns: ["T", "F", "T", "F", "T"],
+                        exp: "থেরাপিউটিক নার্স-পেশেন্ট সম্পর্কের মূল ধাপগুলো হলো Pre-interaction, Orientation, Working এবং Termination phase।"
+                    },
+                    {
+                        type: "tf",
+                        cat: "Academic",
+                        q: "Signs of mental health crisis includes –",
+                        options: ["a. Decrease performance at work", "b. Positive feeling", "c. Change in weight", "d. Good personal hygiene", "e. Sudden change in mood"],
+                        tfAns: ["T", "F", "T", "F", "T"],
+                        exp: "কাজের দক্ষতা কমে যাওয়া, ওজনের পরিবর্তন এবং হঠাৎ মেজাজের পরিবর্তন (Sudden mood swing) মানসিক স্বাস্থ্য সংকটের প্রধান লক্ষণ।"
+                    },
+                    {
+                        type: "tf",
+                        cat: "Academic",
+                        q: "Early warning sign of mentally ill person includes –",
+                        options: ["a. Excessive fear and tension", "b. Insomnia & anorexia", "c. Self-respect", "d. Extreme fluctuation of mood", "e. Happy living of daily life"],
+                        tfAns: ["T", "T", "F", "T", "F"],
+                        exp: "অতিরিক্ত ভয় ও দুশ্চিন্তা, অনিদ্রা ও ক্ষুধামন্দা (Insomnia & anorexia) এবং মেজাজের তীব্র ওঠানামা মানসিক রোগের প্রাথমিক সতর্কবার্তা।"
+                    },
+                    {
+                        type: "tf",
+                        cat: "Academic",
+                        q: "Major mental health problems are –",
+                        options: ["a. Schizophrenia", "b. Hysteria", "c. Mania", "d. Migraine", "e. Depression"],
+                        tfAns: ["T", "F", "T", "F", "T"],
+                        exp: "Schizophrenia, Mania এবং গুরুতর Depression হলো Major mental health সমস্যা; অন্যদিকে Hysteria মাইনর (Neurosis) এবং Migraine স্নায়বিক মাথাব্যথা।"
+                    },
+                    {
+                        type: "tf",
+                        cat: "Academic",
+                        q: "Side effects of anti-psychotic medication are –",
+                        options: ["a. Higher blood sugar", "b. Weight loss", "c. Constipation", "d. Drowsiness", "e. High blood pressure"],
+                        tfAns: ["T", "F", "T", "T", "F"],
+                        exp: "অ্যান্টি-সাইকোটিক ওষুধের পার্শ্বপ্রতিক্রিয়ায় রক্তে সুগার বৃদ্ধি, কোষ্ঠকাঠিন্য (Constipation), তন্দ্রাচ্ছন্নতা (Drowsiness) ও ওজন বৃদ্ধি (Weight gain) দেখা দেয়।"
+                    },
+                    {
+                        type: "tf",
+                        cat: "Academic",
+                        q: "Child psychiatric disorder are –",
+                        options: ["a. Attention Deficit Disorder (ADD)", "b. Autism", "c. Diabetic Mellitus", "d. Schizophrenia", "e. Depression"],
+                        tfAns: ["T", "F", "F", "T", "T"],
+                        exp: "প্রশ্নপত্রের উত্তরমালা অনুযায়ী ADD, Schizophrenia ও Depression সত্য (T) এবং Autism ও Diabetes Mellitus মিথ্যা (F)।"
+                    },
+                    {
+                        type: "tf",
+                        cat: "Academic",
+                        q: "Following are the causes of Schizophrenia –",
+                        options: ["a. Genetic", "b. Social problems", "c. Structural changes in the brain", "d. Inadequate nutrition", "e. Childhood trauma"],
+                        tfAns: ["T", "F", "T", "F", "T"],
+                        exp: "বংশগত কারণ (Genetic), মস্তিষ্কের গঠনগত পরিবর্তন এবং শৈশবের মানসিক আঘাত (Childhood trauma) সিজোফ্রেনিয়ার অন্যতম প্রধান কারণ।"
+                    },
+                    {
+                        type: "tf",
+                        cat: "Academic",
+                        q: "Illicit drug are –",
+                        options: ["a. Cocaine", "b. Furosemide", "c. Diazepam", "d. Heroine", "e. Cristal methamphetamine"],
+                        tfAns: ["T", "F", "F", "T", "T"],
+                        exp: "Cocaine, Heroin এবং Crystal Methamphetamine হলো নিষিদ্ধ মাদকদ্রব্য (Illicit drugs); অন্যদিকে Furosemide ও Diazepam হলো চিকিৎসায় ব্যবহৃত ওষুধ।"
+                    },
+                    {
+                        type: "mcq",
+                        cat: "Academic",
+                        q: "Component of motive cycle is –",
+                        options: ["Drive", "Goal", "Incentive", "Need"],
+                        ans: 3,
+                        exp: "Motivation cycle বা প্রেষণা চক্রের শুরুর ও প্রধান উপাদান হলো Need (ক্রম: Need ➔ Drive ➔ Incentive ➔ Goal)।"
+                    },
+                    {
+                        type: "mcq",
+                        cat: "Academic",
+                        q: "Who is the founder of psychiatric nursing?",
+                        options: ["Linda Richards", "Hildegard Peplau", "Florence Nightingale", "Dorothea Dix"],
+                        ans: 0,
+                        exp: "আমেরিকার প্রথম প্রফেশনালি ট্রেইনড সাইকিয়াট্রিক নার্স হিসেবে Linda Richards-কে সাইকিয়াট্রিক নার্সিংয়ের প্রবর্তক (Founder) বলা হয়।"
+                    },
+                    {
+                        type: "mcq",
+                        cat: "Academic",
+                        q: "Mentally ill is treated by –",
+                        options: ["Medication", "Surgery", "Psychotherapy", "Physiotherapy"],
+                        ans: 2,
+                        exp: "মানসিক রোগীদের চিন্তা, আবেগ ও আচরণের স্থায়ী উন্নতির জন্য প্রধান থেরাপিউটিক পদ্ধতি হলো Psychotherapy।"
+                    },
+                    {
+                        type: "mcq",
+                        cat: "Academic",
+                        q: "Moral behavior of psychiatric nurse is –",
+                        options: ["Authority", "Empathy", "Punishment", "Neglect"],
+                        ans: 1,
+                        exp: "Empathy (সহমর্মিতা বা রোগীর মানসিক অবস্থা নিজের অবস্থান থেকে অনুভব করা) একজন সাইকিয়াট্রিক নার্সের সবচেয়ে গুরুত্বপূর্ণ নৈতিক গুণ।"
+                    },
+                    {
+                        type: "mcq",
+                        cat: "Academic",
+                        q: "World 'Mental Health Day' celebrate on –",
+                        options: ["10th October", "1st April", "5th June", "25th December"],
+                        ans: 0,
+                        exp: "মানসিক স্বাস্থ্য সম্পর্কে সচেতনতা বাড়াতে প্রতি বছর ১০ই অক্টোবর (10th October) বিশ্ব মানসিক স্বাস্থ্য দিবস পালন করা হয়।"
+                    },
+                    {
+                        type: "mcq",
+                        cat: "Academic",
+                        q: "'Neurosis' means –",
+                        options: ["Major mental disorder", "Minor mental disorder", "Neurological disorder", "Hormonal disorder"],
+                        ans: 1,
+                        exp: "Neurosis হলো মৃদু মানসিক সমস্যা (Minor mental disorder যেমন: Anxiety, Phobia), যেখানে রোগীর বাস্তবজ্ঞান বা Insight অটুট থাকে।"
+                    },
+                    {
+                        type: "mcq",
+                        cat: "Academic",
+                        q: "A delusion is –",
+                        options: ["A false belief", "Homosexuality", "Over active", "Guilty feeling"],
+                        ans: 0,
+                        exp: "Delusion (ভ্রান্ত বিশ্বাস) হলো এমন এক অটল মিথ্যা বিশ্বাস (Fixed false belief), যা বাস্তব যুক্তি বা প্রমাণ দিয়েও পরিবর্তন করা যায় না।"
+                    },
+                    {
+                        type: "mcq",
+                        cat: "Academic",
+                        q: "Way of stress management of an older is –",
+                        options: ["Keep them at separate room", "Keep them live alone", "Listen and respect their openness", "Keep them at old home"],
+                        ans: 2,
+                        exp: "প্রবীণ ব্যক্তিদের কথা মনোযোগ দিয়ে শোনা এবং তাদের খোলামেলা মতামতকে সম্মান জানানো তাদের মানসিক চাপ কমানোর সবচেয়ে কার্যকর উপায়।"
+                    },
+                    {
+                        type: "mcq",
+                        cat: "Academic",
+                        q: "Which of the following is mood stabilizer?",
+                        options: ["Sertraline", "Lithium", "Diazepam", "Haloperidol"],
+                        ans: 1,
+                        exp: "Lithium হলো সবচেয়ে কার্যকর ও ক্লাসিক Mood Stabilizer, যা Bipolar disorder ও Mania নিয়ন্ত্রণে ব্যবহৃত হয়।"
+                    },
+                    {
+                        type: "mcq",
+                        cat: "Academic",
+                        q: "Cognitive development is –",
+                        options: ["Skill", "Height", "Weight", "Thought"],
+                        ans: 3,
+                        exp: "Cognitive development বলতে মানুষের চিন্তাশক্তি (Thought), বুদ্ধি, স্মৃতি ও সিদ্ধান্ত গ্রহণের মানসিক বিকাশকে বোঝায়।"
+                    }
+                ]
+            }
+        ];
+        /*__EXAM_BANK_END__*/
+
+        /*__TOOLS_BANK_START__*/
+        const defaultCustomTools = [];
+        /*__TOOLS_BANK_END__*/
+
+        /*__VISIBILITY_BANK_START__*/
+        const defaultCoreVisibility = {
+            liveExamsBox: true,
+            examCard: true,
+            routineCard: true,
+            clinicalCard: true,
+            notesCard: true
+        };
+        /*__VISIBILITY_BANK_END__*/
+
+        let publishedExams = JSON.parse(localStorage.getItem('nurseHubPublishedExams_v4')) || [...defaultExams];
+        let customTools = JSON.parse(localStorage.getItem('nurseHubCustomTools_v1')) || [...defaultCustomTools];
+        let coreVisibility = JSON.parse(localStorage.getItem('nurseHubCoreVisibility_v1')) || { ...defaultCoreVisibility };
+
+        const coreHomeItemsMeta = [
+            { key: 'liveExamsBox', elId: 'home-exams-section', title: 'Live Exams Section', icon: '📝' },
+            { key: 'examCard', elId: 'home-card-exam', title: '01. Exam Engine Card', icon: '🎯' },
+            { key: 'routineCard', elId: 'home-card-routine', title: '02. Smart Planner Card', icon: '📅' },
+            { key: 'clinicalCard', elId: 'home-card-clinical', title: '03. Smart Calculator Card', icon: '🧮' },
+            { key: 'notesCard', elId: 'home-card-notes', title: '04. Pocket Guide Card', icon: '🗂️' }
+        ];
+
+        let isAdminLoggedIn = false;
+        let selectedExamIdForSession = null;
+        let activeQuestions = [];
+        let activeExamTitle = "";
+        let activeExamCat = "";
+        let activeExamNegMark = 0;
+        let candidateInfo = { name: "", session: "", course: "" };
+        let examTimerInterval;
+        let totalAllocatedTime = 360;
+        let timeLeft = 360;
+        let examStartTime = 0;
+        let examSubmitted = false;
+
+        function applyHomepageCoreVisibility() {
+            coreHomeItemsMeta.forEach(item => {
+                const el = document.getElementById(item.elId);
+                if (!el) return;
+                if (coreVisibility[item.key] === false) el.classList.add('hidden');
+                else el.classList.remove('hidden');
+            });
+        }
+
+        function toggleCoreToolVisibility(key) {
+            if (!isAdminLoggedIn) return;
+            coreVisibility[key] = coreVisibility[key] === false ? true : false;
+            localStorage.setItem('nurseHubCoreVisibility_v1', JSON.stringify(coreVisibility));
+            applyHomepageCoreVisibility();
+            renderAdminCoreVisibilityList();
+        }
+
+        function makeAllHomeToolsVisible() {
+            if (!isAdminLoggedIn) return;
+            coreHomeItemsMeta.forEach(item => coreVisibility[item.key] = true);
+            customTools.forEach(t => t.showOnHome = true);
+            localStorage.setItem('nurseHubCoreVisibility_v1', JSON.stringify(coreVisibility));
+            localStorage.setItem('nurseHubCustomTools_v1', JSON.stringify(customTools));
+            applyHomepageCoreVisibility();
+            renderCustomTools();
+            updateAdminUI();
+        }
+
+        function renderAdminCoreVisibilityList() {
+            const container = document.getElementById('admin-core-visibility-list');
+            if (!container) return;
+            container.innerHTML = '';
+
+            coreHomeItemsMeta.forEach(item => {
+                const isVis = coreVisibility[item.key] !== false;
+                container.innerHTML += `
+                    <div class="p-3.5 rounded-xl border ${isVis ? 'bg-emerald-50/60 border-emerald-200' : 'bg-slate-100 border-slate-300'} flex justify-between items-center gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xl">${item.icon}</span>
+                            <div>
+                                <p class="text-xs font-bold text-slate-800 font-en">${item.title}</p>
+                                <span class="text-[11px] font-en font-semibold ${isVis ? 'text-emerald-700' : 'text-rose-600'}">${isVis ? 'Visible on Homepage' : 'Hidden on Homepage'}</span>
+                            </div>
+                        </div>
+                        <button onclick="toggleCoreToolVisibility('${item.key}')" class="${isVis ? 'bg-emerald-600 hover:bg-emerald-700 text-white' : 'bg-slate-700 hover:bg-slate-800 text-white'} px-3 py-1.5 rounded-lg text-xs font-en font-bold shadow-sm shrink-0 transition">
+                            ${isVis ? '👁️ Visible' : '🙈 Hidden'}
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        function renderHomepageExams() {
+            const homeList = document.getElementById('home-exam-list');
+            const countBadge = document.getElementById('home-exam-count');
+
+            countBadge.innerText = `Active Exams: ${publishedExams.length}`;
+            homeList.innerHTML = '';
+
+            if (publishedExams.length === 0) {
+                homeList.innerHTML = `
+                    <div class="col-span-full p-8 md:p-10 bg-teal-50/40 rounded-2xl border border-teal-200/80 text-center">
+                        <p class="text-lg md:text-xl font-bold text-teal-900">🎓 নতুন অনলাইন মডেল টেস্ট শীঘ্রই শুরু হবে</p>
+                        <p class="text-sm md:text-base text-slate-600 font-medium mt-2">পরবর্তী পরীক্ষার সময়সূচি অনুযায়ী প্রশ্নপত্র এখানে যুক্ত করা হবে।</p>
+                    </div>
+                `;
+                return;
+            }
+
+            publishedExams.forEach((ex) => {
+                const negVal = parseFloat(ex.negMark) || 0;
+                const negBadge = negVal > 0
+                    ? `<span class="text-[11px] text-rose-700 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded font-en font-bold">Neg: -${negVal}</span>`
+                    : `<span class="text-[11px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded font-en font-bold">No Negative</span>`;
+
+                homeList.innerHTML += `
+                    <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 hover:border-teal-500 transition flex flex-col justify-between shadow-sm">
+                        <div>
+                            <div class="flex justify-between items-start gap-2 mb-2">
+                                <span class="bg-teal-100 text-teal-800 text-xs font-en font-bold px-2.5 py-0.5 rounded">${ex.cat}</span>
+                                ${negBadge}
+                            </div>
+                            <h4 class="text-lg md:text-xl font-bold text-slate-800 leading-snug mb-2">${ex.title}</h4>
+                            <p class="text-sm text-slate-600 font-en font-medium mb-4">📋 ${ex.questions.length} Questions • ⏱️ ${ex.questions.length} Minutes</p>
+                        </div>
+                        <div class="pt-3 border-t border-slate-200/80">
+                            <button onclick="openExamFromHome('${ex.id}')" class="w-full bg-teal-700 hover:bg-teal-800 text-white font-bold py-2.5 rounded-xl text-sm font-en shadow transition">
+                                Start Exam ➡️
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function injectAndExecuteCode(container, htmlString) {
+            container.innerHTML = htmlString;
+            const scripts = container.querySelectorAll('script');
+            scripts.forEach(oldScript => {
+                const newScript = document.createElement('script');
+                Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                newScript.textContent = oldScript.textContent;
+                oldScript.parentNode.replaceChild(newScript, oldScript);
+            });
+        }
+
+        function renderCustomTools() {
+            const homeSection = document.getElementById('home-custom-tools-section');
+            const homeList = document.getElementById('home-custom-tools-list');
+            const homeCount = document.getElementById('home-tools-count');
+
+            const clinicalWrapper = document.getElementById('clinical-custom-tools-wrapper');
+            const clinicalList = document.getElementById('clinical-custom-tools-list');
+
+            homeList.innerHTML = '';
+            clinicalList.innerHTML = '';
+
+            const homepageTools = customTools.filter(t => t.showOnHome);
+
+            if (homepageTools.length === 0) {
+                homeSection.classList.add('hidden');
+            } else {
+                homeSection.classList.remove('hidden');
+                homeCount.innerText = `Tools: ${homepageTools.length}`;
+
+                homepageTools.forEach(tool => {
+                    const card = document.createElement('div');
+                    card.className = "bg-slate-50 p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between";
+                    card.innerHTML = `
+                        <div>
+                            <div class="flex items-center gap-2 border-b border-slate-200 pb-3 mb-4">
+                                <span class="text-2xl">${tool.icon || '🛠️'}</span>
+                                <h4 class="text-lg font-bold text-teal-900 font-en">${tool.title}</h4>
+                            </div>
+                            <div class="custom-tool-body"></div>
+                        </div>
+                    `;
+                    homeList.appendChild(card);
+                    injectAndExecuteCode(card.querySelector('.custom-tool-body'), tool.code);
+                });
+            }
+
+            if (customTools.length === 0) {
+                clinicalWrapper.classList.add('hidden');
+            } else {
+                clinicalWrapper.classList.remove('hidden');
+                customTools.forEach(tool => {
+                    const card = document.createElement('div');
+                    card.className = "bg-white p-6 rounded-2xl shadow-md border border-slate-200";
+                    card.innerHTML = `
+                        <div class="flex items-center gap-2 border-b border-slate-100 pb-3 mb-4">
+                            <span class="text-2xl">${tool.icon || '🛠️'}</span>
+                            <h4 class="text-lg font-bold text-teal-800 font-en">${tool.title}</h4>
+                        </div>
+                        <div class="custom-tool-body"></div>
+                    `;
+                    clinicalList.appendChild(card);
+                    if (!tool.showOnHome) {
+                        injectAndExecuteCode(card.querySelector('.custom-tool-body'), tool.code);
+                    } else {
+                        card.querySelector('.custom-tool-body').innerHTML = `
+                            <p class="text-sm text-slate-600 mb-3">এই টুলটি বর্তমানে সরাসরি Homepage-এ যুক্ত করা আছে।</p>
+                            <button onclick="showTab('home'); document.getElementById('home-custom-tools-section').scrollIntoView({behavior:'smooth'});" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-4 py-2 rounded-xl text-xs font-en">
+                                Open Tool on Homepage ➡️
+                            </button>
+                        `;
+                    }
+                });
+            }
+        }
+
+        function openExamFromHome(examId) {
+            selectedExamIdForSession = examId;
+            const found = publishedExams.find(e => e.id === examId);
+            if (found) {
+                document.getElementById('custom-exam-title').innerText = found.title;
+                const banner = document.getElementById('special-link-banner');
+                banner.classList.remove('hidden');
+                const negVal = parseFloat(found.negMark) || 0;
+                document.getElementById('special-link-text').innerText = `📌 ${found.cat} • ${found.questions.length} Questions • ${negVal > 0 ? 'Negative Marking: -' + negVal : 'No Negative Marking'}`;
+            }
+            showTab('exam');
+        }
+
+        function checkUrlForCustomExam() {
+            const params = new URLSearchParams(window.location.search);
+            const examIdParam = params.get('examId');
+            if (examIdParam) {
+                const found = publishedExams.find(e => e.id === examIdParam);
+                if (found) openExamFromHome(examIdParam);
+            }
+        }
+
+        function startRegisteredExam() {
+            const nameInput = document.getElementById('std-name').value.trim();
+            const sessionInput = document.getElementById('std-session').value.trim();
+            const courseInput = document.getElementById('std-course').value;
+
+            if (!nameInput || !sessionInput) {
+                alert("⚠️ পরীক্ষা শুরু করার জন্য অবশ্যই 'Candidate Name' এবং 'Session' পূরণ করতে হবে!");
+                return;
+            }
+
+            let chosenExam = null;
+            if (selectedExamIdForSession) {
+                chosenExam = publishedExams.find(e => e.id === selectedExamIdForSession);
+            } else if (publishedExams.length > 0) {
+                chosenExam = publishedExams[0];
+            }
+
+            if (!chosenExam || !chosenExam.questions || chosenExam.questions.length === 0) {
+                alert("⚠️ বর্তমানে কোনো পরীক্ষা সেভ করা নেই!");
+                return;
+            }
+
+            activeQuestions = [...chosenExam.questions];
+            activeExamTitle = chosenExam.title;
+            activeExamCat = chosenExam.cat;
+            activeExamNegMark = parseFloat(chosenExam.negMark) || 0;
+
+            candidateInfo = { name: nameInput, session: sessionInput, course: courseInput };
+
+            document.getElementById('exam-registration').classList.add('hidden');
+            document.getElementById('active-exam-area').classList.remove('hidden');
+            document.getElementById('result-box').classList.add('hidden');
+            document.getElementById('top-submit-btn').classList.remove('hidden');
+            document.getElementById('bottom-submit-area').classList.remove('hidden');
+
+            document.getElementById('live-candidate-banner').innerText = `👤 ${candidateInfo.name} (${candidateInfo.session})`;
+            document.getElementById('live-neg-badge').innerText = activeExamNegMark > 0 ? `Neg: -${activeExamNegMark}` : `No Neg Marking`;
+
+            examSubmitted = false;
+            totalAllocatedTime = activeQuestions.length * 60;
+            timeLeft = totalAllocatedTime;
+            examStartTime = Date.now();
+
+            const timerBadge = document.getElementById('timer-badge');
+            timerBadge.className = "bg-rose-600 text-white font-bold px-2.5 py-1 rounded-lg text-xs font-en";
+            timerBadge.innerHTML = `⏳ <span id="exam-timer">00:00</span>`;
+
+            loadQuiz();
+            startExamTimer();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function loadQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = '';
+            updateAnsweredCount();
+
+            activeQuestions.forEach((item, qIndex) => {
+                const isTF = item.type === 'tf' || Array.isArray(item.tfAns);
+
+                if (isTF) {
+                    let tfRowsHtml = item.options.map((optText, sIndex) => `
+                        <div id="tf-row-${qIndex}-${sIndex}" class="flex items-center justify-between gap-2.5 p-2.5 rounded-xl bg-white border border-slate-200 hover:border-teal-400 transition">
+                            <div class="flex items-center gap-1.5 shrink-0">
+                                <label class="tf-bubble-label cursor-pointer">
+                                    <input type="radio" name="q${qIndex}_s${sIndex}" value="T" onchange="updateAnsweredCount()" class="sr-only">
+                                    <span class="tf-bubble tf-bubble-t" title="True">T</span>
+                                </label>
+                                <label class="tf-bubble-label cursor-pointer">
+                                    <input type="radio" name="q${qIndex}_s${sIndex}" value="F" onchange="updateAnsweredCount()" class="sr-only">
+                                    <span class="tf-bubble tf-bubble-f" title="False">F</span>
+                                </label>
+                            </div>
+                            <span class="text-sm text-slate-800 font-medium flex-1 leading-snug">${optText}</span>
+                            <span id="tf-badge-${qIndex}-${sIndex}" class="hidden text-[11px] font-en font-extrabold px-2 py-0.5 rounded shrink-0"></span>
+                        </div>
+                    `).join('');
+
+                    container.innerHTML += `
+                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200" id="q-block-${qIndex}">
+                            <p class="font-bold text-sm md:text-base text-slate-800 leading-snug mb-3">${qIndex + 1}. ${item.q}</p>
+                            <div class="space-y-2">${tfRowsHtml}</div>
+                            <div id="exp-${qIndex}" class="hidden mt-3.5 text-xs md:text-sm p-3 rounded-xl leading-relaxed"></div>
+                        </div>
+                    `;
+                } else {
+                    let optionsHtml = item.options.map((opt, oIndex) => `
+                        <label class="option-label flex items-center space-x-2.5 p-3 rounded-xl border border-slate-200 bg-white hover:bg-teal-50/50 cursor-pointer transition">
+                            <input type="radio" name="q${qIndex}" value="${oIndex}" onchange="updateAnsweredCount()" class="w-4 h-4 accent-teal-700 shrink-0">
+                            <span class="text-sm text-slate-800">${opt}</span>
+                        </label>
+                    `).join('');
+
+                    container.innerHTML += `
+                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200" id="q-block-${qIndex}">
+                            <p class="font-bold text-sm md:text-base text-slate-800 leading-snug mb-3">${qIndex + 1}. ${item.q}</p>
+                            <div class="grid md:grid-cols-2 gap-2">${optionsHtml}</div>
+                            <div id="exp-${qIndex}" class="hidden mt-3.5 text-xs md:text-sm p-3 rounded-xl leading-relaxed"></div>
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        function updateAnsweredCount() {
+            let count = 0;
+            activeQuestions.forEach((item, qIndex) => {
+                const isTF = item.type === 'tf' || Array.isArray(item.tfAns);
+                if (isTF) {
+                    let anyChecked = false;
+                    item.options.forEach((_, sIndex) => {
+                        if (document.querySelector(`input[name="q${qIndex}_s${sIndex}"]:checked`)) anyChecked = true;
+                    });
+                    if (anyChecked) count++;
+                } else {
+                    if (document.querySelector(`input[name="q${qIndex}"]:checked`)) count++;
+                }
+            });
+            document.getElementById('answered-status').innerText = `উত্তর: ${count}/${activeQuestions.length}`;
+        }
+
+        function startExamTimer() {
+            clearInterval(examTimerInterval);
+            updateTimerUI();
+            examTimerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(examTimerInterval);
+                    submitExam();
+                } else {
+                    timeLeft--;
+                    updateTimerUI();
+                }
+            }, 1000);
+        }
+
+        function updateTimerUI() {
+            let m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            let s = (timeLeft % 60).toString().padStart(2, '0');
+            const timerSpan = document.getElementById('exam-timer');
+            if (timerSpan) timerSpan.innerText = `${m}:${s}`;
+        }
+
+        function submitExam() {
+            if (examSubmitted) return;
+            clearInterval(examTimerInterval);
+            examSubmitted = true;
+
+            let elapsedSeconds = Math.round((Date.now() - examStartTime) / 1000);
+            if (elapsedSeconds < 1) elapsedSeconds = 1;
+            if (elapsedSeconds > totalAllocatedTime) elapsedSeconds = totalAllocatedTime;
+
+            let takenMin = Math.floor(elapsedSeconds / 60).toString().padStart(2, '0');
+            let takenSec = (elapsedSeconds % 60).toString().padStart(2, '0');
+            let formattedTimeTaken = `${takenMin}:${takenSec} (${takenMin}m ${takenSec}s)`;
+
+            const timerBadge = document.getElementById('timer-badge');
+            timerBadge.className = "bg-teal-600 text-white font-bold px-2.5 py-1 rounded-lg text-xs font-en";
+            timerBadge.innerHTML = `⏱️ ${takenMin}:${takenSec}`;
+
+            let rawEarnedPoints = 0;
+            let wrongCountDisplay = 0;
+            let totalNegDeduction = 0;
+
+            activeQuestions.forEach((item, qIndex) => {
+                const expBox = document.getElementById(`exp-${qIndex}`);
+                expBox.classList.remove('hidden');
+                const isTF = item.type === 'tf' || Array.isArray(item.tfAns);
+
+                if (isTF) {
+                    const numStems = item.options.length || 5;
+                    const pointPerStem = 1 / numStems;
+                    const negPerStem = activeExamNegMark > 0 ? (activeExamNegMark / numStems) : 0;
+                    let qCorrectStems = 0;
+
+                    item.options.forEach((_, sIndex) => {
+                        const selected = document.querySelector(`input[name="q${qIndex}_s${sIndex}"]:checked`);
+                        document.querySelectorAll(`input[name="q${qIndex}_s${sIndex}"]`).forEach(inp => inp.disabled = true);
+
+                        const correctVal = (item.tfAns[sIndex] || "T").toUpperCase();
+                        const badge = document.getElementById(`tf-badge-${qIndex}-${sIndex}`);
+                        const row = document.getElementById(`tf-row-${qIndex}-${sIndex}`);
+                        badge.classList.remove('hidden');
+
+                        if (selected) {
+                            if (selected.value === correctVal) {
+                                qCorrectStems++;
+                                rawEarnedPoints += pointPerStem;
+                                badge.innerText = `✅ ${correctVal}`;
+                                badge.className = "text-[11px] font-en font-extrabold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 shrink-0";
+                                row.classList.add('border-emerald-300', 'bg-emerald-50/30');
+                            } else {
+                                wrongCountDisplay++;
+                                totalNegDeduction += negPerStem;
+                                badge.innerText = `❌ Ans: ${correctVal}`;
+                                badge.className = "text-[11px] font-en font-extrabold px-2 py-0.5 rounded bg-rose-100 text-rose-800 shrink-0";
+                                row.classList.add('border-rose-300', 'bg-rose-50/30');
+                            }
+                        } else {
+                            badge.innerText = `⚪ Ans: ${correctVal}`;
+                            badge.className = "text-[11px] font-en font-extrabold px-2 py-0.5 rounded bg-amber-100 text-amber-800 shrink-0";
+                        }
+                    });
+
+                    const ansSummary = item.tfAns.map((v, i) => `${String.fromCharCode(97 + i)}-${v}`).join(', ');
+                    expBox.innerHTML = `📌 <b>সঠিক উত্তর: (${ansSummary})</b> • [সঠিক: ${qCorrectStems}/${numStems}]<br>${item.exp}`;
+                    expBox.className = "mt-3.5 text-xs md:text-sm p-3 rounded-xl bg-teal-50 text-teal-950 border border-teal-300";
+                } else {
+                    const selected = document.querySelector(`input[name="q${qIndex}"]:checked`);
+                    document.querySelectorAll(`input[name="q${qIndex}"]`).forEach(inp => inp.disabled = true);
+
+                    if (selected) {
+                        if (parseInt(selected.value) === item.ans) {
+                            rawEarnedPoints += 1;
+                            expBox.innerHTML = `✅ <b>সঠিক উত্তর!</b><br>${item.exp}`;
+                            expBox.className = "mt-3.5 text-xs md:text-sm p-3 rounded-xl bg-emerald-50 text-emerald-950 border border-emerald-300";
+                        } else {
+                            wrongCountDisplay++;
+                            totalNegDeduction += activeExamNegMark;
+                            expBox.innerHTML = `❌ <b>ভুল উত্তর।</b> সঠিক উত্তর: <b>${item.options[item.ans]}</b><br>${item.exp}`;
+                            expBox.className = "mt-3.5 text-xs md:text-sm p-3 rounded-xl bg-rose-50 text-rose-950 border border-rose-300";
+                        }
+                    } else {
+                        expBox.innerHTML = `⚪ <b>উত্তর দাওনি।</b> সঠিক উত্তর: <b>${item.options[item.ans]}</b><br>${item.exp}`;
+                        expBox.className = "mt-3.5 text-xs md:text-sm p-3 rounded-xl bg-amber-50 text-amber-950 border border-amber-300";
+                    }
+                }
+            });
+
+            let finalScore = Math.max(0, rawEarnedPoints - totalNegDeduction);
+            let percentage = Math.round((finalScore / activeQuestions.length) * 100);
+
+            document.getElementById('res-exam-title-banner').innerText = `${activeExamTitle} (${activeExamCat})`;
+            document.getElementById('res-std-name').innerText = candidateInfo.name;
+            document.getElementById('res-std-session').innerText = candidateInfo.session;
+            document.getElementById('res-std-course').innerText = candidateInfo.course;
+            document.getElementById('res-time-taken').innerText = formattedTimeTaken;
+
+            const statusEl = document.getElementById('res-status');
+            if (percentage >= 60) {
+                statusEl.innerText = `PASSED (${percentage}%)`;
+                statusEl.className = "font-bold text-emerald-700 font-en";
+            } else {
+                statusEl.innerText = `NEEDS REVIEW (${percentage}%)`;
+                statusEl.className = "font-bold text-rose-600 font-en";
+            }
+
+            document.getElementById('res-total').innerText = activeQuestions.length;
+            document.getElementById('res-correct').innerText = rawEarnedPoints.toFixed(2);
+            document.getElementById('res-wrong').innerText = wrongCountDisplay;
+            document.getElementById('res-neg').innerText = `-${totalNegDeduction.toFixed(2)}`;
+            document.getElementById('score-text').innerText = `প্রাপ্ত নম্বর: ${finalScore.toFixed(2)} / ${activeQuestions.length}`;
+
+            document.getElementById('top-submit-btn').classList.add('hidden');
+            document.getElementById('bottom-submit-area').classList.add('hidden');
+            document.getElementById('result-box').classList.remove('hidden');
+
+            saveStudentResultToAdmin({
+                name: candidateInfo.name,
+                session: candidateInfo.session,
+                course: candidateInfo.course,
+                examTitle: `${activeExamTitle} (${activeExamCat})`,
+                score: `${finalScore.toFixed(2)} / ${activeQuestions.length}`,
+                timeTaken: `${takenMin}:${takenSec}`,
+                date: new Date().toLocaleString('en-BD')
+            });
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ================= ADMIN PANEL & BRUTE-FORCE PROTECTED LOGIN =================
+        const _secKey = [8, 58, 33, 59, 40, 47, 60, 37, 9, 27, 40, 61, 60, 37, 124, 124, 121, 9, 106];
+        let _failedAttempts = parseInt(localStorage.getItem('nh_admin_fails') || '0');
+
+        function _verifyEncryptedPass(inputStr) {
+            if (!inputStr || inputStr.length !== _secKey.length) return false;
+            for (let i = 0; i < _secKey.length; i++) {
+                if ((inputStr.charCodeAt(i) ^ 73) !== _secKey[i]) return false;
+            }
+            return true;
+        }
+
+        function verifyAdmin() {
+            const lockUntil = parseInt(localStorage.getItem('nh_admin_lock_until') || '0');
+            if (Date.now() < lockUntil) {
+                const waitMin = Math.ceil((lockUntil - Date.now()) / 60000);
+                alert(`⛔ সিকিউরিটি লক! অতিরিক্ত ভুল চেষ্টার কারণে ${waitMin} মিনিট পর আবার চেষ্টা করুন।`);
+                hideAdminMenuAndExit();
+                return;
+            }
+
+            const pass = document.getElementById('admin-pass-input').value.trim();
+            if (_verifyEncryptedPass(pass)) {
+                _failedAttempts = 0;
+                localStorage.removeItem('nh_admin_fails');
+                localStorage.removeItem('nh_admin_lock_until');
+                isAdminLoggedIn = true;
+                document.body.classList.add('admin-unlocked');
+                document.getElementById('admin-login-box').classList.add('hidden');
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+                updateAdminUI();
+            } else {
+                _failedAttempts++;
+                localStorage.setItem('nh_admin_fails', _failedAttempts.toString());
+                if (_failedAttempts >= 3) {
+                    localStorage.setItem('nh_admin_lock_until', (Date.now() + 15 * 60 * 1000).toString());
+                    localStorage.setItem('nh_admin_fails', '0');
+                    alert("⛔ পরপর ৩ বার ভুল পাসওয়ার্ড! নিরাপত্তার স্বার্থে অ্যাডমিন লগইন ১৫ মিনিটের জন্য ব্লক করা হয়েছে।");
+                    hideAdminMenuAndExit();
+                } else {
+                    alert(`❌ ভুল পাসওয়ার্ড! (সতর্কতা: আর ${3 - _failedAttempts} বার ভুল করলে ১৫ মিনিটের জন্য লক হয়ে যাবে)`);
+                }
+            }
+        }
+
+        function updateAdminUI() {
+            document.getElementById('total-exams-badge').innerText = `Saved Exams: ${publishedExams.length}`;
+            document.getElementById('total-tools-badge').innerText = `Added Tools: ${customTools.length}`;
+            document.getElementById('webhook-url-input').value = localStorage.getItem('nurseHubWebhookUrl') || '';
+            renderAdminCoreVisibilityList();
+            renderAdminSavedExams();
+            renderAdminSavedTools();
+            renderAdminFeedback();
+            renderAdminResults();
+        }
+
+        function loadSampleToolCode(type) {
+            const titleIn = document.getElementById('tool-title-input');
+            const iconIn = document.getElementById('tool-icon-input');
+            const codeIn = document.getElementById('tool-code-input');
+
+            if (type === 'bmi') {
+                titleIn.value = "Parkland Burn Fluid Calculator";
+                iconIn.value = "🔥";
+                codeIn.value = `<div class="space-y-2.5 text-xs">
+  <p class="text-slate-500 font-en">Parkland Formula: 4 mL × Body Weight (kg) × %TBSA Burn</p>
+  <div class="grid grid-cols-2 gap-2">
+    <div>
+      <label class="font-bold block mb-1">Weight (kg):</label>
+      <input type="number" id="burn-w" placeholder="e.g. 60" class="w-full p-2 border rounded-lg font-en">
+    </div>
+    <div>
+      <label class="font-bold block mb-1">% TBSA Burn (1-100%):</label>
+      <input type="number" id="burn-tbsa" placeholder="e.g. 30" class="w-full p-2 border rounded-lg font-en">
+    </div>
+  </div>
+  <button onclick="calcBurnFluid()" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-2 rounded-xl font-en">Calculate 24h Ringer's Lactate</button>
+  <div id="burn-res-box" class="hidden p-2.5 bg-rose-50 border border-rose-300 rounded-xl text-center font-bold text-rose-950"></div>
+</div>
+<script>
+function calcBurnFluid() {
+  const w = parseFloat(document.getElementById('burn-w').value);
+  const tbsa = parseFloat(document.getElementById('burn-tbsa').value);
+  if(!w || !tbsa || w <= 0 || tbsa <= 0) { alert("সঠিক ওজন ও %TBSA দিন!"); return; }
+  const total = Math.round(4 * w * tbsa);
+  const half = Math.round(total / 2);
+  const res = document.getElementById('burn-res-box');
+  res.classList.remove('hidden');
+  res.innerHTML = "💧 Total 24h Fluid (RL): " + total + " mL<br>• 1st 8 Hours: " + half + " mL | • Next 16 Hours: " + half + " mL";
+}
+<\/script>`;
+            } else if (type === 'gcs') {
+                titleIn.value = "Glasgow Coma Scale (GCS) Calculator";
+                iconIn.value = "🧠";
+                codeIn.value = `<div class="space-y-2.5 text-xs">
+  <div>
+    <label class="font-bold block mb-1">Eye Opening (E):</label>
+    <select id="gcs-e" class="w-full p-2 border rounded-lg bg-white">
+      <option value="4">4 - Spontaneous (স্বাভাবিক)</option>
+      <option value="3">3 - To Speech (ডাকলে চোখ খোলে)</option>
+      <option value="2">2 - To Pain (ব্যথা দিলে চোখ খোলে)</option>
+      <option value="1">1 - None (কোনো সাড়া নেই)</option>
+    </select>
+  </div>
+  <div>
+    <label class="font-bold block mb-1">Verbal Response (V):</label>
+    <select id="gcs-v" class="w-full p-2 border rounded-lg bg-white">
+      <option value="5">5 - Oriented (স্বাভাবিক কথা)</option>
+      <option value="4">4 - Confused (এলোমেলো কথা)</option>
+      <option value="3">3 - Inappropriate Words</option>
+      <option value="2">2 - Incomprehensible Sounds</option>
+      <option value="1">1 - None (সাড়া নেই)</option>
+    </select>
+  </div>
+  <div>
+    <label class="font-bold block mb-1">Motor Response (M):</label>
+    <select id="gcs-m" class="w-full p-2 border rounded-lg bg-white">
+      <option value="6">6 - Obeys Commands (নির্দেশ মান্য করে)</option>
+      <option value="5">5 - Localizes Pain</option>
+      <option value="4">4 - Withdraws from Pain</option>
+      <option value="3">3 - Abnormal Flexion (Decorticate)</option>
+      <option value="2">2 - Abnormal Extension (Decerebrate)</option>
+      <option value="1">1 - None (সাড়া নেই)</option>
+    </select>
+  </div>
+  <button onclick="calcCustomGCS()" class="w-full bg-teal-700 hover:bg-teal-800 text-white font-bold py-2 rounded-xl font-en">Calculate GCS Score</button>
+  <div id="gcs-res-box" class="hidden p-2.5 bg-teal-50 border border-teal-300 rounded-xl text-center font-bold text-teal-950"></div>
+</div>
+<script>
+function calcCustomGCS() {
+  const e = parseInt(document.getElementById('gcs-e').value);
+  const v = parseInt(document.getElementById('gcs-v').value);
+  const m = parseInt(document.getElementById('gcs-m').value);
+  const total = e + v + m;
+  let status = "Mild / Normal (13–15)";
+  if(total <= 8) status = "Severe Brain Injury / Coma (≤8)";
+  else if(total <= 12) status = "Moderate Brain Injury (9–12)";
+  const res = document.getElementById('gcs-res-box');
+  res.classList.remove('hidden');
+  res.innerHTML = "🧠 Total GCS: " + total + "/15 (E" + e + "V" + v + "M" + m + ")<br>" + status;
+}
+<\/script>`;
+            }
+        }
+
+        function addNewCustomTool() {
+            if (!isAdminLoggedIn) return;
+            const title = document.getElementById('tool-title-input').value.trim();
+            const icon = document.getElementById('tool-icon-input').value.trim() || "🛠️";
+            const showOnHome = document.getElementById('tool-show-home').checked;
+            const code = document.getElementById('tool-code-input').value.trim();
+
+            if (!title || !code) {
+                alert("⚠️ নতুন টুল যুক্ত করার জন্য অবশ্যই 'Tool Title' এবং 'Tool Code' দিতে হবে!");
+                return;
+            }
+
+            const newTool = {
+                id: "tool_" + Date.now(),
+                title: title,
+                icon: icon,
+                showOnHome: showOnHome,
+                code: code,
+                createdAt: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+            };
+
+            customTools.push(newTool);
+            localStorage.setItem('nurseHubCustomTools_v1', JSON.stringify(customTools));
+
+            document.getElementById('tool-title-input').value = '';
+            document.getElementById('tool-code-input').value = '';
+
+            updateAdminUI();
+            renderCustomTools();
+            alert(`✅ নতুন টুল "${title}" সফলভাবে যুক্ত হয়েছে!`);
+        }
+
+        function toggleToolHomepage(toolId) {
+            if (!isAdminLoggedIn) return;
+            const found = customTools.find(t => t.id === toolId);
+            if (!found) return;
+            found.showOnHome = !found.showOnHome;
+            localStorage.setItem('nurseHubCustomTools_v1', JSON.stringify(customTools));
+            updateAdminUI();
+            renderCustomTools();
+        }
+
+        function deleteCustomTool(toolId) {
+            if (!isAdminLoggedIn) return;
+            if (!confirm("আপনি কি নিশ্চিতভাবে এই টুলটি ডিলিট করতে চান?")) return;
+            customTools = customTools.filter(t => t.id !== toolId);
+            localStorage.setItem('nurseHubCustomTools_v1', JSON.stringify(customTools));
+            updateAdminUI();
+            renderCustomTools();
+        }
+
+        function renderAdminSavedTools() {
+            const listEl = document.getElementById('admin-tools-list');
+            listEl.innerHTML = '';
+
+            if (customTools.length === 0) {
+                listEl.innerHTML = `<p class="text-xs text-slate-400 p-3 text-center bg-white rounded-lg border">এখনো কোনো কাস্টম টুল অ্যাড করা হয়নি।</p>`;
+                return;
+            }
+
+            customTools.forEach(tool => {
+                const homeStatusBtn = tool.showOnHome
+                    ? `<button onclick="toggleToolHomepage('${tool.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm">👁️ Visible on Home</button>`
+                    : `<button onclick="toggleToolHomepage('${tool.id}')" class="bg-slate-700 hover:bg-slate-800 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm">🙈 Hidden on Home</button>`;
+
+                listEl.innerHTML += `
+                    <div class="p-3.5 bg-white rounded-xl border border-slate-200 flex flex-wrap justify-between items-center gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xl">${tool.icon}</span>
+                            <div>
+                                <h5 class="font-bold text-slate-800 text-sm font-en">${tool.title}</h5>
+                                <span class="text-[11px] text-slate-400 font-en">Added: ${tool.createdAt}</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 font-en">
+                            ${homeStatusBtn}
+                            <button onclick="deleteCustomTool('${tool.id}')" class="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-3 py-1.5 rounded-lg text-xs font-bold">🗑️ Delete</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderAdminSavedExams() {
+            const listEl = document.getElementById('admin-exam-list');
+            listEl.innerHTML = '';
+
+            if (publishedExams.length === 0) {
+                listEl.innerHTML = `<p class="text-xs text-slate-400 p-3 text-center bg-white rounded-lg border">কোনো পরীক্ষা এখনো সেভ করা হয়নি।</p>`;
+                return;
+            }
+
+            publishedExams.forEach((ex) => {
+                const negVal = parseFloat(ex.negMark) || 0;
+                listEl.innerHTML += `
+                    <div class="p-3.5 bg-white rounded-xl border border-slate-200 flex flex-wrap justify-between items-center gap-2">
+                        <div>
+                            <span class="bg-teal-100 text-teal-800 text-[10px] font-en font-bold px-2 py-0.5 rounded">${ex.cat}</span>
+                            <h5 class="font-bold text-slate-800 text-sm inline ml-1.5">${ex.title}</h5>
+                            <span class="text-xs text-slate-500 font-en ml-2">(${ex.questions.length} Qs • Neg: -${negVal} • ${ex.createdAt})</span>
+                        </div>
+                        <div class="flex items-center gap-2 font-en">
+                            <button onclick="copySavedExamLink('${ex.id}')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 px-3 py-1.5 rounded-lg text-xs font-bold">🔗 Copy Short Link</button>
+                            <button onclick="deleteExam('${ex.id}')" class="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-3 py-1.5 rounded-lg text-xs font-bold">🗑️ Delete</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function loadBulkSample(type) {
+            const box = document.getElementById('bulk-q-input');
+            if (!document.getElementById('adm-exam-title').value) {
+                document.getElementById('adm-exam-title').value = "Nursing Model Test";
+            }
+            if (type === 'tf') {
+                box.value = `TF: Psychiatric emergency are –\na. Suicidal tendency = T\nb. Delirium = F\nc. Violence = T\nd. Coma = F\ne. Drug poisoning = F\nExp: Suicidal tendency ও Violence হলো সরাসরি Psychiatric emergency।\n\nQ: Who is the founder of psychiatric nursing?\nA: Linda Richards\nB: Hildegard Peplau\nC: Florence Nightingale\nD: Dorothea Dix\nAns: A\nExp: Linda Richards হলেন প্রথম প্রফেশনালি ট্রেইনড সাইকিয়াট্রিক নার্স।`;
+            } else if (type === 'text') {
+                box.value = `Q: মানবদেহের সবচেয়ে বড় গ্রন্থি (Largest Gland) কোনটি?\nA: অগ্ন্যাশয় (Pancreas)\nB: যকৃৎ (Liver)\nC: থাইরয়েড গ্রন্থি (Thyroid)\nD: পিটুইটারি গ্রন্থি (Pituitary)\nAns: B\nExp: যকৃৎ বা লিভার মানবদেহের সবচেয়ে বড় গ্রন্থি এবং ত্বক হলো সবচেয়ে বড় অঙ্গ (Organ)।`;
+            } else {
+                box.value = `[\n  {\n    "type": "tf",\n    "q": "Psychiatric emergency are –",\n    "options": ["a. Suicidal tendency", "b. Delirium", "c. Violence", "d. Coma", "e. Drug poisoning"],\n    "tfAns": ["T", "F", "T", "F", "F"],\n    "exp": "Suicidal tendency ও Violence হলো সরাসরি Psychiatric emergency।"\n  }\n]`;
+            }
+        }
+
+        function parseBulkInput(rawText, targetCat) {
+            const trimmed = rawText.trim();
+            if (!trimmed) return [];
+
+            if (trimmed.startsWith('[')) {
+                try {
+                    const arr = JSON.parse(trimmed);
+                    return arr.map(item => ({
+                        type: item.type || (Array.isArray(item.tfAns) ? 'tf' : 'mcq'),
+                        cat: targetCat,
+                        q: item.q,
+                        options: item.options,
+                        tfAns: item.tfAns,
+                        ans: typeof item.ans === 'number' ? item.ans : 0,
+                        exp: item.exp || "সঠিক উত্তরটি টেক্সটবুক অনুযায়ী যাচাইকৃত।"
+                    }));
+                } catch (e) {
+                    alert("⚠️ JSON কোডিং ফরম্যাটে ভুল আছে!");
+                    return [];
+                }
+            }
+
+            const parsed = [];
+            const blocks = trimmed.split(/\n\s*\n/);
+
+            blocks.forEach(block => {
+                const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
+                if (lines.length === 0) return;
+
+                const firstLine = lines[0];
+                const isExplicitTF = /^(TF|T\/F)\s*[:\.\-]/i.test(firstLine) || /\[True\s*\/\s*False\]/i.test(firstLine);
+                const hasInlineTFAns = lines.some(l => /^[a-e][\.\)]\s*.+[\=\-]\s*[TF]$/i.test(l));
+
+                if (isExplicitTF || hasInlineTFAns) {
+                    let qText = firstLine.replace(/^(TF|T\/F|Q|প্রশ্ন|\d+[\.\)])\s*[:\.\-]?\s*/i, '').replace(/\[True\s*\/\s*False\]\s*/i, '').trim();
+                    let tfOptions = [];
+                    let tfAns = [];
+                    let exp = "সঠিক উত্তরটি টেক্সটবুক অনুযায়ী যাচাইকৃত।";
+
+                    if (qText.includes('<br>')) {
+                        const parts = qText.split(/<br\s*\/?>/i).map(p => p.trim());
+                        qText = parts[0];
+                        tfOptions = parts.slice(1);
+
+                        let optMap = {};
+                        let ansKey = 'A';
+                        lines.slice(1).forEach(line => {
+                            if (/^[A-D][\.\)\:]\s*/i.test(line)) {
+                                const key = line.charAt(0).toUpperCase();
+                                optMap[key] = line.replace(/^[A-D][\.\)\:]\s*/i, '').trim();
+                            } else if (/^(Ans|Answer|উত্তর)\s*[:\-]?\s*/i.test(line)) {
+                                ansKey = line.replace(/^(Ans|Answer|উত্তর)\s*[:\-]?\s*/i, '').trim().toUpperCase().charAt(0);
+                            } else if (/^(Exp|Explanation|ব্যাখ্যা)\s*[:\-]?\s*/i.test(line)) {
+                                exp = line.replace(/^(Exp|Explanation|ব্যাখ্যা)\s*[:\-]?\s*/i, '').trim();
+                            }
+                        });
+                        const correctPattern = optMap[ansKey] || "";
+                        const matches = correctPattern.match(/-[TF]/gi);
+                        if (matches && matches.length > 0) {
+                            tfAns = matches.map(m => m.replace('-', '').toUpperCase());
+                        } else {
+                            tfAns = tfOptions.map(() => "T");
+                        }
+                    } else {
+                        lines.slice(1).forEach(line => {
+                            if (/^[a-e][\.\)\:]\s*/i.test(line)) {
+                                const m = line.match(/^([a-e][\.\)\:]\s*.+?)\s*[\=\-]\s*([TF])$/i);
+                                if (m) {
+                                    tfOptions.push(m[1].trim());
+                                    tfAns.push(m[2].toUpperCase());
+                                } else {
+                                    tfOptions.push(line);
+                                }
+                            } else if (/^(Ans|Answer|উত্তর)\s*[:\-]?\s*/i.test(line)) {
+                                const raw = line.replace(/^(Ans|Answer|উত্তর)\s*[:\-]?\s*/i, '').trim();
+                                const matches = raw.match(/[TF]/gi);
+                                if (matches) tfAns = matches.map(x => x.toUpperCase());
+                            } else if (/^(Exp|Explanation|ব্যাখ্যা)\s*[:\-]?\s*/i.test(line)) {
+                                exp = line.replace(/^(Exp|Explanation|ব্যাখ্যা)\s*[:\-]?\s*/i, '').trim();
+                            }
+                        });
+                    }
+
+                    if (qText && tfOptions.length > 0) {
+                        while (tfAns.length < tfOptions.length) tfAns.push("T");
+                        parsed.push({ type: "tf", cat: targetCat, q: qText, options: tfOptions, tfAns: tfAns, exp: exp });
+                        return;
+                    }
+                }
+
+                let q = "", optA = "", optB = "", optC = "", optD = "", ans = 0, exp = "সঠিক উত্তরটি টেক্সটবুক অনুযায়ী যাচাইকৃত।";
+                lines.forEach(line => {
+                    if (/^(Q|প্রশ্ন|\d+[\.\)])\s*[:\.\-]?\s*/i.test(line) && !q) {
+                        q = line.replace(/^(Q|প্রশ্ন|\d+[\.\)])\s*[:\.\-]?\s*/i, '').trim();
+                    } else if (/^[Aক][\.\)\:]\s*/i.test(line)) {
+                        optA = line.replace(/^[Aক][\.\)\:]\s*/i, '').trim();
+                    } else if (/^[Bখ][\.\)\:]\s*/i.test(line)) {
+                        optB = line.replace(/^[Bখ][\.\)\:]\s*/i, '').trim();
+                    } else if (/^[Cগ][\.\)\:]\s*/i.test(line)) {
+                        optC = line.replace(/^[Cগ][\.\)\:]\s*/i, '').trim();
+                    } else if (/^[Dঘ][\.\)\:]\s*/i.test(line)) {
+                        optD = line.replace(/^[Dঘ][\.\)\:]\s*/i, '').trim();
+                    } else if (/^(Ans|Answer|উত্তর)\s*[:\-]?\s*/i.test(line)) {
+                        let rawAns = line.replace(/^(Ans|Answer|উত্তর)\s*[:\-]?\s*/i, '').trim().toUpperCase().charAt(0);
+                        const map = { 'A': 0, 'B': 1, 'C': 2, 'D': 3, 'ক': 0, 'খ': 1, 'গ': 2, 'ঘ': 3, '1': 0, '2': 1, '3': 2, '4': 3 };
+                        ans = map[rawAns] ?? 0;
+                    } else if (/^(Exp|Explanation|ব্যাখ্যা)\s*[:\-]?\s*/i.test(line)) {
+                        exp = line.replace(/^(Exp|Explanation|ব্যাখ্যা)\s*[:\-]?\s*/i, '').trim();
+                    }
+                });
+
+                if (q && optA && optB && optC && optD) {
+                    parsed.push({ type: "mcq", cat: targetCat, q, options: [optA, optB, optC, optD], ans, exp });
+                }
+            });
+
+            return parsed;
+        }
+
+        function publishExamToHomepage() {
+            if (!isAdminLoggedIn) return;
+            const targetCat = document.getElementById('adm-course').value;
+            const examTitle = document.getElementById('adm-exam-title').value.trim() || `${targetCat} Model Test`;
+            const negMarkVal = parseFloat(document.getElementById('adm-neg-mark').value) || 0;
+            const rawText = document.getElementById('bulk-q-input').value;
+            const questions = parseBulkInput(rawText, targetCat);
+
+            if (questions.length === 0) {
+                alert("⚠️ কোনো প্রশ্ন শনাক্ত করা যায়নি! বক্সে সঠিক ফরম্যাটে প্রশ্ন পেস্ট করুন।");
+                return;
+            }
+
+            const newExam = {
+                id: "exam_" + Date.now(),
+                title: examTitle,
+                cat: targetCat,
+                negMark: negMarkVal,
+                createdAt: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+                questions: questions
+            };
+
+            publishedExams.unshift(newExam);
+            localStorage.setItem('nurseHubPublishedExams_v4', JSON.stringify(publishedExams));
+
+            document.getElementById('bulk-q-input').value = '';
+            document.getElementById('adm-exam-title').value = '';
+
+            updateAdminUI();
+            renderHomepageExams();
+            alert(`✅ "${examTitle}" (${questions.length}টি প্রশ্ন) সফলভাবে হোমপেজে সেভ হয়েছে!`);
+        }
+
+        function deleteExam(examId) {
+            if (!isAdminLoggedIn) return;
+            if (!confirm("আপনি কি নিশ্চিতভাবে এই পরীক্ষাটি হোমপেজ থেকে ডিলিট করতে চান?")) return;
+            publishedExams = publishedExams.filter(e => e.id !== examId);
+            localStorage.setItem('nurseHubPublishedExams_v4', JSON.stringify(publishedExams));
+            updateAdminUI();
+            renderHomepageExams();
+        }
+
+        function copySavedExamLink(examId) {
+            const found = publishedExams.find(e => e.id === examId);
+            if (!found) return;
+
+            const baseUrl = window.location.origin !== 'null' ? (window.location.origin + window.location.pathname) : window.location.pathname;
+            const shareLink = `${baseUrl}?examId=${encodeURIComponent(found.id)}`;
+
+            const linkBox = document.getElementById('generated-link-box');
+            linkBox.value = shareLink;
+            linkBox.classList.remove('hidden');
+            linkBox.select();
+            navigator.clipboard?.writeText(shareLink);
+            alert(`🔗 "${found.title}"-এর লিংক কপি হয়েছে!`);
+        }
+
+        // AUTO-ENCRYPTING EXPORTER: Encrypts all questions and tools inside index.html when downloaded!
+        function downloadUpdatedHtmlFile() {
+            const clone = document.documentElement.cloneNode(true);
+            
+            const clonedBody = clone.querySelector('body');
+            if (clonedBody) clonedBody.classList.remove('admin-unlocked');
+
+            clone.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+            const homeTab = clone.querySelector('#home');
+            if (homeTab) homeTab.classList.remove('hidden');
+
+            clone.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active-nav'));
+            const navHome = clone.querySelector('#nav-home');
+            if (navHome) navHome.classList.add('active-nav');
+
+            const navAdmin = clone.querySelector('#nav-admin');
+            const adminDash = clone.querySelector('#admin-dashboard');
+            const adminLogin = clone.querySelector('#admin-login-box');
+            const adminPass = clone.querySelector('#admin-pass-input');
+            if (navAdmin) navAdmin.classList.add('hidden');
+            if (adminDash) adminDash.classList.add('hidden');
+            if (adminLogin) adminLogin.classList.remove('hidden');
+            if (adminPass) adminPass.value = '';
+
+            let htmlContent = clone.outerHTML;
+            // Encrypt exam bank and tools so source code viewers only see unreadable cipher strings!
+            const encryptedExamsCode = `const defaultExams = _decData("${_encData(publishedExams)}");`;
+            const encryptedToolsCode = `const defaultCustomTools = _decData("${_encData(customTools)}");`;
+            const newVisJson = `const defaultCoreVisibility = ${JSON.stringify(coreVisibility)};`;
+
+            htmlContent = htmlContent.replace(
+                /\/\*__EXAM_BANK_START__\*\/[\s\S]*?\/\*__EXAM_BANK_END__\*\//,
+                `/*__EXAM_BANK_START__*/\n        ${encryptedExamsCode}\n        /*__EXAM_BANK_END__*/`
+            );
+
+            htmlContent = htmlContent.replace(
+                /\/\*__TOOLS_BANK_START__\*\/[\s\S]*?\/\*__TOOLS_BANK_END__\*\//,
+                `/*__TOOLS_BANK_START__*/\n        ${encryptedToolsCode}\n        /*__TOOLS_BANK_END__*/`
+            );
+
+            htmlContent = htmlContent.replace(
+                /\/\*__VISIBILITY_BANK_START__\*\/[\s\S]*?\/\*__VISIBILITY_BANK_END__\*\//,
+                `/*__VISIBILITY_BANK_START__*/\n        ${newVisJson}\n        /*__VISIBILITY_BANK_END__*/`
+            );
+
+            const blob = new Blob(["<!DOCTYPE html>\n" + htmlContent], { type: 'text/html' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = "index.html";
+            a.click();
+        }
+
+        function saveStudentResultToAdmin(record) {
+            let results = JSON.parse(localStorage.getItem('nurseHubAdminResults')) || [];
+            results.unshift(record);
+            localStorage.setItem('nurseHubAdminResults', JSON.stringify(results));
+
+            const webhookUrl = localStorage.getItem('nurseHubWebhookUrl');
+            if (webhookUrl) {
+                fetch(webhookUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(record)
+                }).catch(() => {});
+            }
+        }
+
+        function renderAdminResults() {
+            const results = JSON.parse(localStorage.getItem('nurseHubAdminResults')) || [];
+            const tbody = document.getElementById('admin-results-tbody');
+            tbody.innerHTML = '';
+
+            if (results.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-400">এখনো কেউ পরীক্ষা দেয়নি।</td></tr>`;
+                return;
+            }
+
+            results.forEach(r => {
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-50">
+                        <td class="p-3 font-bold text-slate-800">${r.name}</td>
+                        <td class="p-3 text-teal-700 font-bold">${r.session}</td>
+                        <td class="p-3">${r.course}</td>
+                        <td class="p-3 font-semibold">${r.examTitle || 'Exam'}</td>
+                        <td class="p-3 font-extrabold text-emerald-700">${r.score}</td>
+                        <td class="p-3 font-bold text-indigo-700">${r.timeTaken}</td>
+                        <td class="p-3 text-slate-500">${r.date}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function saveWebhookUrl() {
+            const url = document.getElementById('webhook-url-input').value.trim();
+            localStorage.setItem('nurseHubWebhookUrl', url);
+            alert("✅ Cloud Sync URL সেভ হয়েছে!");
+        }
+
+        function exportResultsCSV() {
+            const results = JSON.parse(localStorage.getItem('nurseHubAdminResults')) || [];
+            if (results.length === 0) { alert("ডাউনলোড করার মতো কোনো রেজাল্ট নেই!"); return; }
+
+            let csv = "Candidate Name,Session,Course,Exam Title,Score,Time Taken,Date\n";
+            results.forEach(r => {
+                csv += `"${r.name}","${r.session}","${r.course}","${r.examTitle || ''}","${r.score}","${r.timeTaken}","${r.date}"\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = "NurseHub_BD_Exam_Results.csv";
+            a.click();
+        }
+
+        function clearAdminResults() {
+            if (confirm("আপনি কি সব শিক্ষার্থীর রেজাল্ট মুছে ফেলতে চান?")) {
+                localStorage.removeItem('nurseHubAdminResults');
+                renderAdminResults();
+            }
+        }
+
+        // ================= 4. CLEAN & ORGANIZED ROUTINE MAKER =================
+        let activeRoutineFilter = 'ALL';
+        let routineList = JSON.parse(localStorage.getItem('nurseHubRoutine_v5')) || [
+            { day: "শনিবার (Saturday)", time: "8:00 AM - 2:00 PM", type: "🏥 Clinical Ward Duty", topic: "Medicine Ward (Male)", done: false },
+            { day: "শনিবার (Saturday)", time: "8:30 PM - 10:30 PM", type: "🎯 Licensing/BPSC Job Prep.", topic: "Psychiatric Nursing & MCQ", done: false },
+            { day: "রবিবার (Sunday)", time: "7:00 PM - 9:30 PM", type: "📖 Academic Study", topic: "Medical-Surgical Nursing", done: false }
+        ];
+
+        function applyShiftPreset(val) {
+            if (!val) return;
+            const parts = val.split('|');
+            if (parts.length === 2) {
+                document.getElementById('rt-time').value = parts[0];
+                document.getElementById('rt-type').value = parts[1];
+                document.getElementById('rt-topic').focus();
+            }
+        }
+
+        function filterRoutineByDay(dayFilter) {
+            activeRoutineFilter = dayFilter;
+            renderRoutine();
+        }
+
+        function toggleRoutineDone(index) {
+            routineList[index].done = !routineList[index].done;
+            renderRoutine();
+        }
+
+        function renderRoutine() {
+            const tbody = document.getElementById('routine-tbody');
+            tbody.innerHTML = '';
+
+            document.getElementById('rt-stat-total').innerText = routineList.length;
+            document.getElementById('rt-stat-clinical').innerText = routineList.filter(i => i.type.includes('Clinical')).length;
+            document.getElementById('rt-stat-study').innerText = routineList.filter(i => !i.type.includes('Clinical')).length;
+
+            const filtered = activeRoutineFilter === 'ALL'
+                ? routineList.map((item, idx) => ({ ...item, origIndex: idx }))
+                : routineList.map((item, idx) => ({ ...item, origIndex: idx })).filter(i => i.day === activeRoutineFilter);
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-5 text-center text-slate-400">কোনো রুটিন পাওয়া যায়নি। উপরের বক্স থেকে নতুন রুটিন যুক্ত করুন।</td></tr>`;
+                localStorage.setItem('nurseHubRoutine_v5', JSON.stringify(routineList));
+                return;
+            }
+
+            filtered.forEach((item) => {
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-50 transition ${item.done ? 'opacity-60 bg-emerald-50/30' : ''}">
+                        <td class="p-3">
+                            <button onclick="toggleRoutineDone(${item.origIndex})" class="w-5 h-5 rounded border ${item.done ? 'bg-emerald-600 border-emerald-600 text-white' : 'bg-white border-slate-300 text-transparent'} font-bold text-xs flex items-center justify-center">✓</button>
+                        </td>
+                        <td class="p-3 font-bold text-teal-900">${item.day}</td>
+                        <td class="p-3 font-en font-semibold text-slate-700">${item.time}</td>
+                        <td class="p-3"><span class="bg-teal-50 text-teal-800 border border-teal-200 px-2 py-0.5 rounded text-[11px] font-bold font-en">${item.type}</span></td>
+                        <td class="p-3 font-bold font-en ${item.done ? 'line-through text-slate-400' : 'text-slate-800'}">${item.topic}</td>
+                        <td class="p-3 text-center no-print">
+                            <button onclick="deleteRoutine(${item.origIndex})" class="text-rose-600 hover:bg-rose-50 px-2 py-1 rounded font-bold text-xs">✖</button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            localStorage.setItem('nurseHubRoutine_v5', JSON.stringify(routineList));
+        }
+
+        function addRoutineItem() {
+            const day = document.getElementById('rt-day').value;
+            const time = document.getElementById('rt-time').value.trim();
+            const type = document.getElementById('rt-type').value;
+            const topic = document.getElementById('rt-topic').value.trim();
+
+            if (!time || !topic) {
+                alert("⚠️ অনুগ্রহ করে Time/Shift এবং Ward/Subject পূরণ করুন!");
+                return;
+            }
+            routineList.push({ day, time, type, topic, done: false });
+            document.getElementById('rt-time').value = '';
+            document.getElementById('rt-topic').value = '';
+            activeRoutineFilter = 'ALL';
+            renderRoutine();
+        }
+
+        function deleteRoutine(index) {
+            routineList.splice(index, 1);
+            renderRoutine();
+        }
+
+        function clearRoutine() {
+            if (confirm("আপনি কি পুরো রুটিন মুছে ফেলতে চান?")) {
+                routineList = [];
+                renderRoutine();
+            }
+        }
+
+        // ================= 5. SMART CALCULATOR FUNCTIONS =================
+        function calcIV() {
+            const vol = parseFloat(document.getElementById('iv-vol').value);
+            const timeVal = parseFloat(document.getElementById('iv-time').value);
+            const timeUnit = document.getElementById('iv-time-unit').value;
+            const drop = parseFloat(document.getElementById('iv-drop').value);
+            const res = document.getElementById('iv-res');
+
+            if (!vol || !timeVal || vol <= 0 || timeVal <= 0) {
+                alert("⚠️ সঠিক স্যালাইনের পরিমাণ (Volume in mL) এবং সময় (Duration) ইনপুট দিন!");
+                return;
+            }
+
+            const totalMinutes = timeUnit === 'hours' ? (timeVal * 60) : timeVal;
+            const totalHours = totalMinutes / 60;
+            const exactGtt = (vol * drop) / totalMinutes;
+            const roundedGtt = Math.round(exactGtt);
+            const mlPerHr = (vol / totalHours).toFixed(1);
+
+            res.classList.remove('hidden');
+            res.innerHTML = `
+                💧 <b>Drip Rate: <span class="text-base font-en">${roundedGtt} gtt/min</span></b> (ফোঁটা/মিনিট)<br>
+                ⚡ <b>Infusion Pump Rate: <span class="font-en">${mlPerHr} mL/hour</span></b><br>
+                <span class="text-[11px] text-slate-600 font-en">Exact: ${exactGtt.toFixed(2)} gtt/min</span>
+            `;
+        }
+
+        function calcDrug() {
+            const des = parseFloat(document.getElementById('dg-des').value);
+            const desUnit = document.getElementById('dg-des-unit').value;
+            const have = parseFloat(document.getElementById('dg-have').value);
+            const haveUnit = document.getElementById('dg-have-unit').value;
+            const qty = parseFloat(document.getElementById('dg-qty').value);
+            const res = document.getElementById('dg-res');
+
+            if (!des || !have || !qty || des <= 0 || have <= 0 || qty <= 0) {
+                alert("⚠️ সবগুলো ঘরে সঠিক ধনাত্মক সংখ্যা ইনপুট দিন!");
+                return;
+            }
+
+            const toMcg = { 'mcg': 1, 'mg': 1000, 'g': 1000000 };
+            const desInMcg = des * toMcg[desUnit];
+            const haveInMcg = have * toMcg[haveUnit];
+
+            const exactAmount = (desInMcg / haveInMcg) * qty;
+            const formattedAmount = Number.isInteger(exactAmount) ? exactAmount : exactAmount.toFixed(2);
+
+            res.classList.remove('hidden');
+            res.innerHTML = `
+                💉 <b>প্রদেয় মাত্রা (Required Dose): <span class="text-base font-en">${formattedAmount} mL (বা Tablet)</span></b><br>
+                <span class="text-[11px] text-slate-600 font-en">Ordered: ${des} ${desUnit} | Available: ${have} ${haveUnit} per ${qty} unit</span>
+            `;
+        }
+
+        function calcEDD() {
+            const lmpInput = document.getElementById('edd-lmp').value;
+            const res = document.getElementById('edd-res');
+            if (!lmpInput) {
+                alert("⚠️ প্রথমে শেষ মাসিকের প্রথম দিন (First Day of LMP) সিলেক্ট করুন!");
+                return;
+            }
+
+            const lmpDate = new Date(lmpInput + "T00:00:00");
+            const eddDate = new Date(lmpDate.getTime() + (280 * 24 * 60 * 60 * 1000));
+            const today = new Date();
+
+            const diffTime = today.getTime() - lmpDate.getTime();
+            const totalDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            let gaText = "";
+
+            if (totalDays >= 0 && totalDays <= 300) {
+                const weeks = Math.floor(totalDays / 7);
+                const days = totalDays % 7;
+                let trimester = "1st Trimester";
+                if (weeks >= 28) trimester = "3rd Trimester";
+                else if (weeks >= 13) trimester = "2nd Trimester";
+                gaText = `<br>🤰 <b>Gestational Age: <span class="font-en">${weeks} Weeks ${days} Days</span></b> (${trimester})`;
+            }
+
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            res.classList.remove('hidden');
+            res.innerHTML = `
+                👶 <b>সম্ভাব্য প্রসবের তারিখ (EDD): <span class="text-base">${eddDate.toLocaleDateString('bn-BD', options)}</span></b>
+                <span class="text-[11px] font-en text-slate-600 block">(${eddDate.toDateString()})</span>
+                ${gaText}
+            `;
+        }
+
+        function toggleBmiHeightMode() {
+            const mode = document.getElementById('bmi-height-mode').value;
+            if (mode === 'cm') {
+                document.getElementById('bmi-cm-wrapper').classList.remove('hidden');
+                document.getElementById('bmi-ft-wrapper').classList.add('hidden');
+            } else {
+                document.getElementById('bmi-cm-wrapper').classList.add('hidden');
+                document.getElementById('bmi-ft-wrapper').classList.remove('hidden');
+            }
+        }
+
+        function calcBMI() {
+            const weight = parseFloat(document.getElementById('bmi-weight').value);
+            const mode = document.getElementById('bmi-height-mode').value;
+            let heightCm = 0;
+
+            if (mode === 'cm') {
+                heightCm = parseFloat(document.getElementById('bmi-height-cm').value);
+            } else {
+                const ft = parseFloat(document.getElementById('bmi-height-ft').value) || 0;
+                const inches = parseFloat(document.getElementById('bmi-height-in').value) || 0;
+                heightCm = ((ft * 12) + inches) * 2.54;
+            }
+
+            if (!weight || !heightCm || weight <= 0 || heightCm <= 30) {
+                alert("⚠️ সঠিক ওজন (kg) এবং উচ্চতা ইনপুট দিন!");
+                return;
+            }
+
+            const heightM = heightCm / 100;
+            const bmi = weight / (heightM * heightM);
+            const bmiFixed = bmi.toFixed(1);
+
+            let category = "";
+            let colorClass = "text-emerald-800";
+            if (bmi < 18.5) {
+                category = "Underweight (স্বাভাবিকের চেয়ে কম ওজন — <18.5)";
+                colorClass = "text-amber-800";
+            } else if (bmi >= 18.5 && bmi <= 24.9) {
+                category = "Normal Weight (স্বাভাবিক ওজন — 18.5–24.9)";
+                colorClass = "text-emerald-800";
+            } else if (bmi >= 25.0 && bmi <= 29.9) {
+                category = "Overweight (অতিরিক্ত ওজন — 25.0–29.9)";
+                colorClass = "text-amber-900";
+            } else if (bmi >= 30.0 && bmi <= 34.9) {
+                category = "Obesity Class I (স্থূলতা গ্রেড ১ — 30.0–34.9)";
+                colorClass = "text-rose-700";
+            } else if (bmi >= 35.0 && bmi <= 39.9) {
+                category = "Obesity Class II (স্থূলতা গ্রেড ২ — 35.0–39.9)";
+                colorClass = "text-rose-800";
+            } else {
+                category = "Obesity Class III (≥40.0)";
+                colorClass = "text-rose-900";
+            }
+
+            const minHealthyW = (18.5 * heightM * heightM).toFixed(1);
+            const maxHealthyW = (24.9 * heightM * heightM).toFixed(1);
+
+            const res = document.getElementById('bmi-res');
+            res.classList.remove('hidden');
+            res.innerHTML = `
+                ⚖️ <b>BMI: <span class="text-base font-en">${bmiFixed} kg/m²</span></b><br>
+                📌 <b>Status:</b> <span class="font-bold ${colorClass}">${category}</span><br>
+                🎯 <b>Normal Weight Range:</b> <span class="font-en font-bold">${minHealthyW} – ${maxHealthyW} kg</span>
+            `;
+        }
+
+        // ================= 6. POCKET GUIDE: 10 HIGH-YIELD NURSING FLASHCARDS =================
+        const flashcards = [
+            {
+                q: "01. Normal Adult Intracranial Pressure (ICP) কত এবং কখন তা বিপজ্জনক?",
+                a: "স্বাভাবিক ICP হলো 5 – 15 mmHg। যদি ICP একটানা 20 mmHg-এর বেশি থাকে, তবে তাকে Intracranial Hypertension বলে এবং দ্রুত চিকিৎসা প্রয়োজন হয়।"
+            },
+            {
+                q: "02. Digoxin (Cardiac Glycoside) দেওয়ার আগে নার্সের প্রধান দায়িত্ব কী?",
+                a: "পূর্ণ ১ মিনিট ধরে Apical Pulse গোনা। প্রাপ্তবয়স্কদের ক্ষেত্রে পালস 60 bpm-এর কম হলে (শিশুদের <70 এবং নবজাতকের <90–110 bpm হলে) ওষুধটি বন্ধ (Withhold) রেখে ডাক্তারকে জানাতে হবে।"
+            },
+            {
+                q: "03. রক্ত সঞ্চালনের (Blood Transfusion) জন্য আদর্শ IV Cannula কোনটি?",
+                a: "18 Gauge (Green) হলো স্ট্যান্ডার্ড (প্রয়োজনে 20G Pink ব্যবহার করা যায়), যাতে লোহিত রক্তকণিকা ভেঙে না যায় (Hemolysis রোধ করতে)। একটি ব্লাড ব্যাগ সর্বোচ্চ ৪ ঘণ্টার মধ্যে শেষ করতে হয়।"
+            },
+            {
+                q: "04. অ্যানাফাইল্যাকটিক শক (Anaphylactic Shock)-এর First-Line Drug of Choice কোনটি?",
+                a: "Adrenaline (Epinephrine) 1:1000 (1 mg/mL) — প্রাপ্তবয়স্কদের ডোজ 0.3 থেকে 0.5 mg IM (উরুর মাঝখানের বাইরের দিকে Vastus lateralis পেশিতে) তাৎক্ষণিকভাবে দিতে হয়।"
+            },
+            {
+                q: "05. প্রি-একলাম্পসিয়া/একলাম্পসিয়ায় ব্যবহৃত Magnesium Sulfate (MgSO₄) টক্সিসিটির লক্ষণ ও অ্যান্টিডোট কী?",
+                a: "টক্সিসিটির প্রথম লক্ষণ হলো Patellar Reflex (Knee Jerk) অদৃশ্য হয়ে যাওয়া, শ্বাসপ্রশ্বাস <12/min হওয়া এবং প্রস্রাব <30 mL/hr হওয়া। এর নির্দিষ্ট অ্যান্টিডোট হলো 10% Calcium Gluconate (10 mL IV)।"
+            },
+            {
+                q: "06. Lumbar Puncture (LP / Spinal Tap) করার সময় এবং পরে রোগীকে কোন পজিশনে রাখতে হয়?",
+                a: "LP করার সময় রোগীকে Lateral Recumbent (Fetal Position — হাঁটু বুকের কাছে ভাঁজ করে) রাখতে হয়। আর প্রসিডিউর শেষে Post-LP Headache প্রতিরোধে ৪–৮ ঘণ্টা চিত হয়ে (Supine/Flat) শুয়ে থাকতে হয়।"
+            },
+            {
+                q: "07. নাসোগ্যাস্ট্রিক টিউব (NG Tube) পরানোর সঠিক মাপ (NEX Method) ও অবস্থান নিশ্চিত করার সেরা উপায় কী?",
+                a: "মাপ: নাকের ডগা (Nose) ➔ কানের লতি (Earlobe) ➔ স্টার্নামের শেষ প্রান্ত (Xiphoid Process)। অবস্থান নিশ্চিত করার Gold Standard হলো Chest/Abdominal X-ray এবং বেডসাইড পদ্ধতি হলো গ্যাস্ট্রিক অ্যাসপিরেটের pH (≤ 5.5) পরীক্ষা করা।"
+            },
+            {
+                q: "08. অচেতন রোগীকে (Unconscious Patient) Mouth Care বা বিশ্রামের সময় কোন পজিশনে রাখা বাধ্যতামূলক?",
+                a: "Lateral বা Sims' (Side-lying) পজিশনে মাথা একপাশে কাত করে রাখতে হবে, যাতে মুখের লালা বা তরল শ্বাসনালীতে ঢুকে Aspiration Pneumonia না ঘটায়।"
+            },
+            {
+                q: "09. ইনসুলিন (Insulin) ও হেপারিন (Heparin) ইনজেকশন কোন অ্যাঙ্গেলে এবং কোন রুটে দেওয়া হয়?",
+                a: "Subcutaneous (SC) রুটে 45° থেকে 90° অ্যাঙ্গেলে (চামড়ার পুরুত্ব ও সুঁইয়ের দৈর্ঘ্য অনুযায়ী) দেওয়া হয়। ইনসুলিনের সাইট নিয়মিত ঘুরিয়ে (Rotate) দিতে হয় যেন Lipodystrophy না হয়।"
+            },
+            {
+                q: "10. Lithium Therapy চলাকালীন স্বাভাবিক Therapeutic Blood Level কত এবং কখন টক্সিসিটি দেখা দেয়?",
+                a: "স্বাভাবিক থেরাপিউটিক লেভেল হলো 0.6 – 1.2 mEq/L। রক্তে এর মাত্রা 1.5 mEq/L-এর বেশি হলে Lithium Toxicity (হাত কাঁপা, বমি, ডায়রিয়া, Ataxia) দেখা দেয়। রোগীকে পর্যাপ্ত পানি ও স্বাভাবিক লবণ (Na⁺) খেতে পরামর্শ দিতে হয়।"
+            }
+        ];
+
+        let currentCard = 0;
+        let showingAnswer = false;
+
+        function updateCard() {
+            document.getElementById('card-text').innerText = showingAnswer ? flashcards[currentCard].a : flashcards[currentCard].q;
+            document.getElementById('card-badge').innerText = showingAnswer ? "✅ Verified Clinical Answer (Tap for Question)" : "❓ Clinical Question (Tap to Flip)";
+            document.getElementById('card-count').innerText = `${currentCard + 1} / ${flashcards.length}`;
+        }
+        function flipCard() { showingAnswer = !showingAnswer; updateCard(); }
+        function nextCard() { currentCard = (currentCard + 1) % flashcards.length; showingAnswer = false; updateCard(); }
+        function prevCard() { currentCard = (currentCard - 1 + flashcards.length) % flashcards.length; showingAnswer = false; updateCard(); }
+
+        // Pomodoro Study Timer
+        let pomoTime = 25 * 60;
+        let pomoInterval = null;
+        function updatePomoDisplay() {
+            let m = Math.floor(pomoTime / 60).toString().padStart(2, '0');
+            let s = (pomoTime % 60).toString().padStart(2, '0');
+            document.getElementById('pomo-display').innerText = `${m}:${s}`;
+        }
+        function startPomo() {
+            if (pomoInterval) return;
+            pomoInterval = setInterval(() => {
+                if (pomoTime > 0) { pomoTime--; updatePomoDisplay(); }
+                else { clearInterval(pomoInterval); pomoInterval = null; alert("🎉 ২৫ মিনিট ফোকাস স্টাডি শেষ! এবার ৫ মিনিটের বিরতি নিন।"); }
+            }, 1000);
+        }
+        function pausePomo() { clearInterval(pomoInterval); pomoInterval = null; }
+        function resetPomo() { pausePomo(); pomoTime = 25 * 60; updatePomoDisplay(); }
+
+        // ================= 7. ULTRA SECURITY SHIELD: ANTI-COPY, ANTI-DEVTOOLS & ANTI-PRINT =================
+        document.addEventListener('contextmenu', event => {
+            if (!isAdminLoggedIn) event.preventDefault();
+        });
+
+        ['copy', 'cut', 'dragstart', 'selectstart'].forEach(evtType => {
+            document.addEventListener(evtType, event => {
+                const tag = event.target && event.target.tagName ? event.target.tagName.toLowerCase() : '';
+                if (!isAdminLoggedIn && tag !== 'input' && tag !== 'textarea' && tag !== 'select') {
+                    event.preventDefault();
+                }
+            });
+        });
+
+        document.addEventListener('keydown', event => {
+            if (isAdminLoggedIn) return;
+            const key = event.key ? event.key.toLowerCase() : '';
+            // Block F12, Ctrl+Shift+I/J/C/K, Ctrl+U, Ctrl+S, Ctrl+C, Ctrl+X, and Ctrl+P during active exam
+            const isExamRunning = !document.getElementById('active-exam-area').classList.contains('hidden') && !examSubmitted;
+            if (
+                event.key === 'F12' ||
+                (event.ctrlKey && event.shiftKey && (key === 'i' || key === 'j' || key === 'c' || key === 'k')) ||
+                (event.ctrlKey && (key === 'u' || key === 's' || key === 'c' || key === 'x')) ||
+                (event.ctrlKey && key === 'p' && isExamRunning)
+            ) {
+                event.preventDefault();
+                return false;
+            }
+        });
+
+        // Anti-Debugger & Console Protection Trap for Visitors
+        setInterval(() => {
+            if (!isAdminLoggedIn) {
+                console.clear();
+                console.log("%c🛑 STOP! NurseHub BD Security Shield Active.", "color: red; font-size: 20px; font-weight: bold;");
+            }
+        }, 2000);
+
+        // Initialize App on Load
+        applyHomepageCoreVisibility();
+        renderHomepageExams();
+        renderCustomTools();
+        renderRoutine();
+        updateCard();
+        checkUrlForCustomExam();
+    </script>
+</body>
+</html>
