@@ -3901,5 +3901,219 @@ function calcCustomGCS() {
         checkUrlForCustomExam();
     </script>
 
+<!-- ================= RESULTS BUTTON FIX & AUTO CLOUD SYNC PLUGIN ================= -->
+<script>
+(function initNurseHubFixesAndCloudSync() {
+    // 1. Fix 'Results' Menu Button & Tab so tapping 'Results' always works!
+    function ensureResultsMenuWorks() {
+        let resNavBtn = document.getElementById('nav-results');
+        const navAdmin = document.getElementById('nav-admin');
+
+        if (!resNavBtn && navAdmin) {
+            resNavBtn = document.createElement('button');
+            resNavBtn.id = 'nav-results';
+            resNavBtn.className = 'nav-btn hover:bg-white/10 px-3 py-1.5 rounded-lg transition';
+            resNavBtn.innerText = 'Results';
+            navAdmin.parentNode.insertBefore(resNavBtn, navAdmin);
+        }
+
+        if (resNavBtn) {
+            resNavBtn.setAttribute('onclick', "showTab('results')");
+            resNavBtn.onclick = function() { showTab('results'); };
+        }
+
+        const homeTab = document.getElementById('home');
+        let resultsTab = document.getElementById('results');
+        if (homeTab && !resultsTab) {
+            resultsTab = document.createElement('div');
+            resultsTab.id = 'results';
+            resultsTab.className = 'tab-content hidden';
+            homeTab.parentNode.insertBefore(resultsTab, document.getElementById('admin'));
+        }
+
+        const allWrappers = document.querySelectorAll('#nh-result-portal-wrapper');
+        if (resultsTab && allWrappers.length > 0) {
+            const latestWrapper = allWrappers[allWrappers.length - 1];
+            if (latestWrapper.parentNode !== resultsTab) {
+                resultsTab.innerHTML = '';
+                resultsTab.appendChild(latestWrapper);
+            }
+            document.querySelectorAll('#nh-result-portal-wrapper').forEach(w => {
+                if (w !== latestWrapper) w.remove();
+            });
+        }
+
+        // Hide empty custom tool container on Homepage if only Results is present
+        const homeCustomSec = document.getElementById('home-custom-tools-section');
+        if (homeCustomSec && typeof customTools !== 'undefined' && customTools.length <= 1) {
+            homeCustomSec.classList.add('hidden');
+        }
+    }
+
+    ensureResultsMenuWorks();
+    setTimeout(ensureResultsMenuWorks, 500);
+    setTimeout(ensureResultsMenuWorks, 1500);
+
+    // 2. Built-in Auto Cloud Sync for Student Exam Results & Visitor Feedback
+    const _autoCloudTopicUrl = "https://ntfy.sh/nhbd_live_portal_sync_550_v2";
+
+    function pushToAutoCloud(kind, payloadData) {
+        fetch(_autoCloudTopicUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({ _kind: kind, payload: payloadData, ts: Date.now() })
+        }).catch(() => {});
+    }
+
+    async function syncAllDevicesDataForAdmin() {
+        try {
+            const response = await fetch(_autoCloudTopicUrl + "/json?poll=1&since=all&t=" + Date.now());
+            const rawText = await response.text();
+            const lines = rawText.split(/\r?\n/).filter(Boolean);
+
+            let cloudFeedback = [];
+            let cloudResults = [];
+            let hadClearFb = false;
+            let hadClearRes = false;
+            const deletedFbIds = new Set();
+
+            lines.forEach(line => {
+                try {
+                    const wrapper = JSON.parse(line);
+                    if (!wrapper || wrapper.event !== 'message' || !wrapper.message) return;
+                    const data = JSON.parse(wrapper.message);
+
+                    if (data._kind === 'clear_feedback') {
+                        cloudFeedback = [];
+                        hadClearFb = true;
+                    } else if (data._kind === 'delete_feedback' && data.payload) {
+                        deletedFbIds.add(data.payload);
+                        cloudFeedback = cloudFeedback.filter(f => f.id !== data.payload);
+                    } else if (data._kind === 'feedback' && data.payload) {
+                        if (!deletedFbIds.has(data.payload.id)) {
+                            cloudFeedback.unshift(data.payload);
+                        }
+                    } else if (data._kind === 'clear_results') {
+                        cloudResults = [];
+                        hadClearRes = true;
+                    } else if (data._kind === 'exam_result' && data.payload) {
+                        cloudResults.unshift(data.payload);
+                    }
+                } catch (e) {}
+            });
+
+            const localFb = hadClearFb ? [] : (JSON.parse(localStorage.getItem('nurseHubVisitorFeedback_v1')) || []);
+            const fbMap = new Map();
+            [...cloudFeedback, ...localFb].forEach(item => {
+                if (!item || deletedFbIds.has(item.id)) return;
+                const key = item.id || (item.name + '_' + item.message);
+                if (!fbMap.has(key)) fbMap.set(key, item);
+            });
+            localStorage.setItem('nurseHubVisitorFeedback_v1', JSON.stringify(Array.from(fbMap.values())));
+
+            const localRes = hadClearRes ? [] : (JSON.parse(localStorage.getItem('nurseHubAdminResults')) || []);
+            const resMap = new Map();
+            [...cloudResults, ...localRes].forEach(item => {
+                if (!item) return;
+                const key = item.id || (item.name + '_' + item.session + '_' + item.score + '_' + item.timeTaken);
+                if (!resMap.has(key)) resMap.set(key, item);
+            });
+            localStorage.setItem('nurseHubAdminResults', JSON.stringify(Array.from(resMap.values())));
+
+            if (typeof isAdminLoggedIn !== 'undefined' && isAdminLoggedIn) {
+                if (typeof renderAdminFeedback === 'function') renderAdminFeedback();
+                if (typeof renderAdminResults === 'function') renderAdminResults();
+            }
+        } catch (err) {}
+    }
+
+    window.submitVisitorFeedback = function() {
+        const type = document.getElementById('fb-type-input').value;
+        const name = document.getElementById('fb-visitor-name').value.trim();
+        const rating = document.getElementById('fb-visitor-rating').value;
+        const message = document.getElementById('fb-visitor-message').value.trim();
+
+        if (!name || !message) {
+            alert("⚠️ সাবমিট করার জন্য অবশ্যই আপনার নাম এবং মতামত/সমস্যা লিখতে হবে!");
+            return;
+        }
+
+        const feedbackItem = {
+            id: "fb_" + Date.now() + "_" + Math.random().toString(36).substring(2, 6),
+            type: type,
+            name: name,
+            rating: type === 'Review' ? rating : '⚠️ Issue Report',
+            message: message,
+            date: new Date().toLocaleString('en-BD')
+        };
+
+        let feedbackList = JSON.parse(localStorage.getItem('nurseHubVisitorFeedback_v1')) || [];
+        feedbackList.unshift(feedbackItem);
+        localStorage.setItem('nurseHubVisitorFeedback_v1', JSON.stringify(feedbackList));
+
+        pushToAutoCloud('feedback', feedbackItem);
+
+        document.getElementById('fb-visitor-name').value = '';
+        document.getElementById('fb-visitor-message').value = '';
+        if (typeof closeFeedbackModal === 'function') closeFeedbackModal();
+        if (typeof isAdminLoggedIn !== 'undefined' && isAdminLoggedIn && typeof renderAdminFeedback === 'function') {
+            renderAdminFeedback();
+        }
+        alert(`✅ ধন্যবাদ ${name}! আপনার মতামত সফলভাবে জমা হয়েছে।`);
+    };
+
+    window.saveStudentResultToAdmin = function(record) {
+        record.id = record.id || ("er_" + Date.now() + "_" + Math.random().toString(36).substring(2, 6));
+        let results = JSON.parse(localStorage.getItem('nurseHubAdminResults')) || [];
+        results.unshift(record);
+        localStorage.setItem('nurseHubAdminResults', JSON.stringify(results));
+
+        pushToAutoCloud('exam_result', record);
+    };
+
+    window.deleteFeedbackItem = function(index) {
+        let list = JSON.parse(localStorage.getItem('nurseHubVisitorFeedback_v1')) || [];
+        const removed = list[index];
+        list.splice(index, 1);
+        localStorage.setItem('nurseHubVisitorFeedback_v1', JSON.stringify(list));
+        if (removed && removed.id) pushToAutoCloud('delete_feedback', removed.id);
+        if (typeof renderAdminFeedback === 'function') renderAdminFeedback();
+    };
+
+    window.clearVisitorFeedback = function() {
+        if (confirm("আপনি কি সব রিভিউ এবং রিপোর্ট মুছে ফেলতে চান?")) {
+            localStorage.removeItem('nurseHubVisitorFeedback_v1');
+            pushToAutoCloud('clear_feedback', true);
+            if (typeof renderAdminFeedback === 'function') renderAdminFeedback();
+        }
+    };
+
+    window.clearAdminResults = function() {
+        if (confirm("আপনি কি সব শিক্ষার্থীর রেজাল্ট মুছে ফেলতে চান?")) {
+            localStorage.removeItem('nurseHubAdminResults');
+            pushToAutoCloud('clear_results', true);
+            if (typeof renderAdminResults === 'function') renderAdminResults();
+        }
+    };
+
+    const _origUpdateAdminUI = window.updateAdminUI;
+    window.updateAdminUI = function() {
+        if (typeof _origUpdateAdminUI === 'function') _origUpdateAdminUI();
+        ensureResultsMenuWorks();
+        const whInput = document.getElementById('webhook-url-input');
+        if (whInput && !whInput.value) {
+            whInput.placeholder = "✅ Auto Cloud Sync Active (লিংক দেওয়ার প্রয়োজন নেই)";
+        }
+        syncAllDevicesDataForAdmin();
+    };
+
+    setInterval(() => {
+        ensureResultsMenuWorks();
+        if (typeof isAdminLoggedIn !== 'undefined' && isAdminLoggedIn) {
+            syncAllDevicesDataForAdmin();
+        }
+    }, 8000);
+})();
+</script>
 
 </body></html>
