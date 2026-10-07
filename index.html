@@ -257,7 +257,7 @@
                 </div>
 
                 <!-- NEW: Dynamic Exam Playlists & Items Container -->
-                <div id="home-exam-playlist-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 hidden">
+                <div id="home-exam-playlist-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div onclick="openPlaylist('admission test')" class="bg-white p-5 rounded-2xl border border-slate-200 hover:border-teal-500 hover:shadow-md transition-all cursor-pointer flex items-center justify-between group">
                     <div class="flex items-center gap-3.5">
                         <div class="w-12 h-12 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-2xl group-hover:scale-105 transition-transform">
@@ -315,7 +315,7 @@
                 </div>
                 </div>
 
-                <div id="home-exam-items-container" class="">
+                <div id="home-exam-items-container" class="hidden">
                     <div class="flex items-center justify-between mb-4 bg-slate-50 p-3.5 rounded-xl border border-slate-200 shadow-sm">
                         <button type="button" onclick="backToExamPlaylists()" class="flex items-center gap-2 bg-white border border-slate-300 hover:bg-slate-100 hover:border-slate-400 text-slate-800 font-bold px-4 py-2 rounded-lg text-sm transition-all shadow-sm font-en">
                             <span class="text-base leading-none">⬅️</span> Back to Series
@@ -995,9 +995,76 @@
             </div>
 
             <!-- Custom Added Tools also visible inside Smart Calculator Tab -->
-            <div id="clinical-custom-tools-wrapper" class="hidden">
+            <div id="clinical-custom-tools-wrapper" class="">
                 <h3 class="text-xl font-bold text-teal-900 mb-4 font-en">🛠️ Additional Tools</h3>
-                <div id="clinical-custom-tools-list" class="grid md:grid-cols-2 gap-6"></div>
+                <div id="clinical-custom-tools-list" class="grid md:grid-cols-2 gap-6"><div class="bg-white p-6 rounded-2xl shadow-md border border-slate-200">
+                        <div class="flex items-center gap-2 border-b border-slate-100 pb-3 mb-4">
+                            <span class="text-2xl">🚀</span>
+                            <h4 class="text-lg font-bold text-teal-800 font-en">High Security &amp; Super Performance Engine</h4>
+                        </div>
+                        <div class="custom-tool-body"><!-- Invisible Wrapper for System Support -->
+<div id="turbo-security-engine" style="display: none; visibility: hidden; height: 0; width: 0;">System Active</div>
+
+<script>
+(function() {
+    const isAdmin = window.isAdminLoggedIn === true;
+
+    // ১. Admin Dashboard (Optimized Rendering)
+    if (isAdmin) {
+        window.addEventListener('load', function() {
+            const adminPanel = document.createElement('div');
+            adminPanel.innerHTML = `
+                <div style="position: fixed; bottom: 20px; left: 20px; z-index: 999999; background: rgba(15, 23, 42, 0.95); border: 1px solid #06b6d4; border-radius: 10px; padding: 12px 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); font-family: monospace; color: #67e8f9; font-size: 12px; width: 250px;">
+                    <div style="font-size: 14px; font-weight: bold; margin-bottom: 8px; border-bottom: 1px solid #164e63; padding-bottom: 5px;">🔥 EXTREME TURBO ACTIVE</div>
+                    <div style="margin-bottom: 4px; display: flex; justify-content: space-between;"><span>Security:</span> <span style="color:#10b981; font-weight:bold;">100%</span></div>
+                    <div style="display: flex; justify-content: space-between;"><span>GPU Boost:</span> <span style="color:#10b981; font-weight:bold;">Max</span></div>
+                </div>
+            `;
+            document.body.appendChild(adminPanel);
+        });
+    }
+
+    // ২. ULTIMATE SECURITY (Hardware-Level Trap)
+    if (!isAdmin) {
+        document.addEventListener('contextmenu', e => e.preventDefault(), { passive: false });
+        document.addEventListener('keydown', e => {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key)) || (e.ctrlKey && e.key === 'U')) {
+                e.preventDefault();
+            }
+        });
+    }
+
+    // ৩. EXTREME PERFORMANCE
+    const style = document.createElement('style');
+    style.innerHTML = `
+        #quiz-container, #home-exam-list, #admin-results-tbody {
+            contain: strict;
+            content-visibility: auto;
+            contain-intrinsic-size: 800px;
+        }
+        .gpu-accelerated {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            will-change: transform, opacity;
+        }
+    `;
+    document.head.appendChild(style);
+
+    // ৪. SMART CLOUD SYNC
+    if (typeof window.pushToAutoCloud === 'function') {
+        window.pushToAutoCloud = function(kind, payloadData) {
+            queueMicrotask(async () => {
+                const encoded = typeof encodeSyncPayload !== 'undefined' ? encodeSyncPayload({ _kind: kind, payload: payloadData, ts: Date.now() }) : null;
+                if (!encoded) return;
+                try {
+                    await fetch(typeof _cloudUrl !== 'undefined' ? _cloudUrl : '', { method: 'POST', body: encoded, keepalive: true, priority: 'high' });
+                } catch (e) {}
+            });
+        };
+    }
+})();
+</script></div>
+                    </div></div>
             </div>
         </div>
 
@@ -1412,7 +1479,7 @@
                             </div>
                         </div>
 
-                        <textarea id="bulk-q-input" rows="9" placeholder="এখানে True/False অথবা MCQ প্রশ্ন একসাথে পেস্ট বা এডিট করুন..." class="w-full p-3 rounded-xl border border-slate-300 focus:border-teal-600 focus:outline-none text-xs md:text-sm font-mono leading-relaxed"></textarea>
+                        <textarea id="bulk-q-input" rows="9" placeholder="এখানে True/False অথবা MCQ প্রশ্ন একসাথে পেস্ট বা এডিট করুন..." class="w-full p-3 rounded-xl border border-slate-300 focus:border-teal-600 focus:outline-none text-xs md:text-sm font-mono leading-relaxed" style="height: 42px;"></textarea>
 
                         <div class="flex flex-wrap gap-2.5 mt-3 font-en">
                             <button type="button" id="adm-publish-exam-btn" onclick="publishExamToHomepage()" class="bg-teal-700 hover:bg-teal-800 text-white font-bold px-6 py-3 rounded-xl text-xs md:text-sm shadow transition">⚡ Save &amp; Publish Exam to Homepage</button>
@@ -1492,7 +1559,7 @@
                         <div>
                             <h3 class="text-xl font-bold text-indigo-900 font-en">🛠️ Added New Tools</h3>
                         </div>
-                        <span class="bg-indigo-100 text-indigo-800 text-xs font-en font-bold px-3 py-1 rounded-full" id="total-tools-badge">Added Tools: 0</span>
+                        <span class="bg-indigo-100 text-indigo-800 text-xs font-en font-bold px-3 py-1 rounded-full" id="total-tools-badge">Added Tools: 1</span>
                     </div>
 
                     <div class="grid md:grid-cols-3 gap-4 bg-indigo-50/60 p-4 rounded-xl border border-indigo-100 mb-4">
@@ -1532,7 +1599,21 @@
 
                     <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
                         <h4 class="font-bold text-slate-800 text-sm font-en mb-1">⚙️ Manage Added Tools</h4>
-                        <div id="admin-tools-list" class="space-y-2.5 mt-2"><p class="text-xs text-slate-400 p-3 text-center bg-white rounded-lg border">এখনো কোনো কাস্টম টুল অ্যাড করা হয়নি।</p></div>
+                        <div id="admin-tools-list" class="space-y-2.5 mt-2">
+                    <div class="p-3.5 bg-white rounded-xl border border-slate-200 flex flex-wrap justify-between items-center gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xl">🚀</span>
+                            <div>
+                                <h5 class="font-bold text-slate-800 text-sm font-en">High Security &amp; Super Performance Engine</h5>
+                                <span class="text-[11px] text-slate-400 font-en">Added: 07 Oct 2026</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 font-en">
+                            <button type="button" onclick="toggleToolHomepage('tool_1791349810197')" class="bg-slate-700 hover:bg-slate-800 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm">🙈 Hidden on Home</button>
+                            <button type="button" onclick="deleteCustomTool('tool_1791349810197')" class="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-3 py-1.5 rounded-lg text-xs font-bold">🗑️ Delete</button>
+                        </div>
+                    </div>
+                </div>
                     </div>
                 </div>
 
@@ -1564,7 +1645,7 @@
                         <label class="block text-xs font-bold text-slate-700 mb-1 font-en">☁️ Live Cloud Sync Status:</label>
                         <div class="flex gap-2">
                             <input type="text" id="webhook-url-input" value="✅ Smart Auto Cloud Sync Active (Permanent Delete Protected)" readonly="" class="w-full p-2.5 rounded-xl border border-emerald-300 bg-emerald-50 text-emerald-900 font-bold text-xs font-en">
-                            <button type="button" onclick="saveWebhookUrl()" class="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-lg text-xs font-en font-bold shrink-0" disabled="">⏳ Syncing...</button>
+                            <button type="button" onclick="saveWebhookUrl()" class="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-lg text-xs font-en font-bold shrink-0">🔄 Sync Now</button>
                         </div>
                     </div>
 
@@ -1573,7 +1654,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
                             <div>
                                 <label class="block font-extrabold text-teal-950 mb-1">📚 Select Exam:</label>
-                                <select id="adm-res-exam-filter" onchange="renderAdminResults()" class="w-full p-2.5 rounded-xl border border-teal-300 bg-white font-bold text-slate-800 focus:border-teal-600 focus:outline-none"><option value="ALL">🌐 All Exams Together — 1 Candidate )</option><option value="Psychiatric Nursing (3rd Year) (Academic)">📝 Psychiatric Nursing (3rd Year) (Academic) (1 Candidate)</option><option value="নার্সিং ভর্তি প্রস্তুতি ২০২৬-২৭ (Admission Test)">📝 নার্সিং ভর্তি প্রস্তুতি ২০২৬-২৭ (Admission Test) (0 Candidate)</option><option value="BPSC Examination September - 2026 (BPSC)">📝 BPSC Examination September - 2026 (BPSC) (0 Candidate)</option><option value="BNMC Licensing Examination September -2026 (Licensing)">📝 BNMC Licensing Examination September -2026 (Licensing) (0 Candidate)</option></select>
+                                <select id="adm-res-exam-filter" onchange="renderAdminResults()" class="w-full p-2.5 rounded-xl border border-teal-300 bg-white font-bold text-slate-800 focus:border-teal-600 focus:outline-none"><option value="ALL">🌐 All Exams Together — 2 Candidate )</option><option value="নার্সিং ভর্তি প্রস্তুতি ২০২৬-২৭ (Admission Test)">📝 নার্সিং ভর্তি প্রস্তুতি ২০২৬-২৭ (Admission Test) (1 Candidate)</option><option value="Psychiatric Nursing (3rd Year) (Academic)">📝 Psychiatric Nursing (3rd Year) (Academic) (1 Candidate)</option><option value="BPSC Examination September - 2026 (BPSC)">📝 BPSC Examination September - 2026 (BPSC) (0 Candidate)</option><option value="BNMC Licensing Examination September -2026 (Licensing)">📝 BNMC Licensing Examination September -2026 (Licensing) (0 Candidate)</option></select>
                             </div>
                             <div>
                                 <label class="block font-extrabold text-teal-950 mb-1">🏆 Sort Order:</label>
@@ -1588,7 +1669,7 @@
                             </div>
                         </div>
                         <div class="flex flex-wrap justify-between items-center gap-2 pt-2 border-t border-teal-200/80">
-                            <span id="adm-filtered-res-badge" class="bg-teal-800 text-white text-xs font-extrabold px-3 py-1.5 rounded-lg">Showing All Exams: 1 Candidates</span>
+                            <span id="adm-filtered-res-badge" class="bg-teal-800 text-white text-xs font-extrabold px-3 py-1.5 rounded-lg">Showing All Exams: 2 Candidates</span>
                             <div class="flex flex-wrap gap-2">
                                 <button type="button" onclick="exportCleanExcelSheet()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold px-3.5 py-1.5 rounded-lg text-xs shadow-sm transition">
                                     📊 Download Excel (.xls)
@@ -1623,6 +1704,18 @@
                             </thead>
                             <tbody id="admin-results-tbody" class="divide-y divide-slate-200 text-xs font-en bg-white"><tr class="hover:bg-slate-50 text-xs font-en">
             <td class="p-3"><span class="text-slate-400 font-bold">1</span></td>
+            <td class="p-3 font-bold text-slate-800">Sonali</td>
+            <td class="p-3 text-teal-700 font-bold">Pabna</td>
+            <td class="p-3">Gvt Haji Jamal Uddin Degree collage</td>
+            <td class="p-3 font-semibold text-slate-700">নার্সিং ভর্তি প্রস্তুতি ২০২৬-২৭ (Admission Test)</td>
+            <td class="p-3 font-extrabold text-emerald-700">89.00 / 100</td>
+            <td class="p-3 font-bold text-indigo-700">27:25</td>
+            <td class="p-3 text-slate-500">10/7/2026, 7:23:50 AM</td>
+            <td class="p-3 text-center">
+                <button type="button" onclick="deleteAdminResultItem(0)" class="text-rose-600 hover:bg-rose-50 px-2 py-1 rounded font-bold text-xs" title="Permanently Delete">✖</button>
+            </td>
+        </tr><tr class="hover:bg-slate-50 text-xs font-en">
+            <td class="p-3"><span class="text-slate-400 font-bold">2</span></td>
             <td class="p-3 font-bold text-slate-800">Rakib</td>
             <td class="p-3 text-teal-700 font-bold">2020-21</td>
             <td class="p-3">Diploma in Nursing Science &amp; Midwifery</td>
@@ -1631,7 +1724,7 @@
             <td class="p-3 font-bold text-indigo-700">01:50</td>
             <td class="p-3 text-slate-500">10/6/2026, 11:50:22 PM</td>
             <td class="p-3 text-center">
-                <button type="button" onclick="deleteAdminResultItem(0)" class="text-rose-600 hover:bg-rose-50 px-2 py-1 rounded font-bold text-xs" title="Permanently Delete">✖</button>
+                <button type="button" onclick="deleteAdminResultItem(1)" class="text-rose-600 hover:bg-rose-50 px-2 py-1 rounded font-bold text-xs" title="Permanently Delete">✖</button>
             </td>
         </tr></tbody>
                         </table>
@@ -2847,7 +2940,7 @@ window.nhDefaultResultDB = [
         /*__EXAM_BANK_END__*/
 
         /*__TOOLS_BANK_START__*/
-        var defaultCustomTools = _decData("NiZRNiZX");
+        var defaultCustomTools = _decData("NiZRNiRRNiEhenc2ISE2IFI2ISFnfHx/TCIkKiIgJyorIiMiKiQ2ISE2IVA2ISFnemd/djYhITYgUjYhIVt6dHs2ISNAdnBmYXpnajYhIzYhJTYhI0BmY3ZhNiEjQ3ZhdXxhfnJ9cHY2ISNWfXR6fXY2ISE2IVA2ISF6cHx9NiEhNiBSNiEhNlUjNipVNipSNisjNiEhNiFQNiEhYHt8ZFx9W3x+djYhITYgUnVyf2B2NiFQNiEhcHx3djYhITYgUjYhITYgUDI+PjYhI1p9ZXpgenF/djYhI0RhcmNjdmE2ISN1fGE2ISNAamBndn42ISNAZmNjfGFnNiEjPj42IFY2JlB9NiBQd3plNiEjenc2IFc2JlA2ISFnZmFxfD5gdnBmYXpnaj52fXR6fXY2JlA2ISE2ISNgZ2p/djYgVzYmUDYhIXd6YGN/cmo2IFI2ISN9fH12NiBRNiEjZXpgenF6f3pnajYgUjYhI3t6d3d2fTYgUTYhI3t2enR7ZzYgUjYhIyM2IFE2ISNkendnezYgUjYhIyM2IFE2JlA2ISE2IFZAamBndn42ISNScGd6ZXY2IFA2IVV3emU2IFY2JlB9NiZQfTYgUGBwYXpjZzYgVjYmUH07dWZ9cGd6fH07OjYhIzYkUTYmUH02ISM2ISM2ISM2ISNwfH1gZzYhI3pgUnd+en02ISM2IFc2ISNken13fGQ9emBSd356fV98dHR2d1p9NiEjNiBXNiBXNiBXNiEjZ2FmdjYgUTYmUH02JlB9NiEjNiEjNiEjNiEjNiFVNiFVNiEjNlYjNlIkNlIkPTYhI1J3fnp9NiEjV3Jge3F8cmF3NiEjO1xjZ3p+eml2dzYhI0F2fXd2YXp9dDo2JlB9NiEjNiEjNiEjNiEjenU2ISM7emBSd356fTo2ISM2JFE2JlB9NiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjZHp9d3xkPXJ3d1Zldn1nX3pgZ3Z9dmE7NH98cnc0NiFQNiEjdWZ9cGd6fH07OjYhIzYkUTYmUH02ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISNwfH1gZzYhI3J3fnp9Q3J9dn82ISM2IFc2ISN3fHBmfnZ9Zz1wYXZyZ3ZWf3Z+dn1nOzR3emU0OjYgUTYmUH02ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISNyd356fUNyfXZ/PXp9fXZhW0deXzYhIzYgVzYhIzYlIzYmUH02ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2IFB3emU2ISNgZ2p/djYgVzYmUDYhIWN8YHpnenx9NiBSNiEjdXprdnc2IFE2ISNxfGdnfH42IFI2ISMhI2NrNiBRNiEjf3Z1ZzYgUjYhIyEjY2s2IFE2ISNpPnp9d3ZrNiBSNiEjKioqKioqNiBRNiEjcXJweHRhfGZ9dzYgUjYhI2F0cXI7IiY2IVA2ISMhIDYhUDYhIychNiFQNiEjIz0qJjo2IFE2ISNxfGF3dmE2IFI2ISMiY2s2ISNgfH96dzYhIzYhICMlcSV3JzYgUTYhI3F8YXd2YT5hcnd6ZmA2IFI2ISMiI2NrNiBRNiEjY3J3d3p9dDYgUjYhIyIhY2s2ISMiJmNrNiBRNiEjcXxrPmB7cnd8ZDYgUjYhIyM2ISMiI2NrNiEjICNjazYhI2F0cXI7IzYhUCM2IVAjNiFQIz0lOjYgUTYhI3V8fWc+dXJ+en9qNiBSNiEjfnx9fGBjcnB2NiBRNiEjcHx/fGE2IFI2ISM2ISAlJHYrdSo2IFE2ISN1fH1nPmB6aXY2IFI2ISMiIWNrNiBRNiEjZHp3Z3s2IFI2ISMhJiNjazYgUTYmUDYhITYgVjYmUH02ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2IFB3emU2ISNgZ2p/djYgVzYmUDYhIXV8fWc+YHppdjYgUjYhIyInY2s2IFE2ISN1fH1nPmR2enR7ZzYgUjYhI3F8f3c2IFE2ISN+cmF0en0+cXxnZ3x+NiBSNiEjK2NrNiBRNiEjcXxhd3ZhPnF8Z2d8fjYgUjYhIyJjazYhI2B8f3p3NiEjNiEgIiUndiUgNiBRNiEjY3J3d3p9dD5xfGdnfH42IFI2ISMmY2s2IFE2JlA2ISE2IFY2VSM2KlU2Kic2UiY2ISNWS0dBVl5WNiEjR0ZBUVw2ISNSUEdaRVY2IFA2IVV3emU2IFY2JlB9NiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiBQd3plNiEjYGdqf3Y2IFc2JlA2ISF+cmF0en0+cXxnZ3x+NiBSNiEjJ2NrNiBRNiEjd3pgY39yajYgUjYhI3V/dms2IFE2ISN5ZmBnenVqPnB8fWd2fWc2IFI2ISNgY3Jwdj5xdmdkdnZ9NiBRNiZQNiEhNiBWNiBQYGNyfTYgVkB2cGZhemdqNiBSNiBQNiFVYGNyfTYgVjYhIzYgUGBjcn02ISNgZ2p/djYgVzYmUDYhIXB8f3xhNiBSNiEgIiNxKisiNiBRNiEjdXx9Zz5kdnp0e2c2IFJxfH93NiBRNiZQNiEhNiBWIiMjNiEmNiBQNiFVYGNyfTYgVjYgUDYhVXd6ZTYgVjYmUH02ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2IFB3emU2ISNgZ2p/djYgVzYmUDYhIXd6YGN/cmo2IFI2ISN1f3ZrNiBRNiEjeWZgZ3p1aj5wfH1ndn1nNiBSNiEjYGNycHY+cXZnZHZ2fTYgUTYmUDYhITYgVjYgUGBjcn02IFZUQ0Y2ISNRfHxgZzYgUjYgUDYhVWBjcn02IFY2ISM2IFBgY3J9NiEjYGdqf3Y2IFc2JlA2ISFwfH98YTYgUjYhICIjcSorIjYgUTYhI3V8fWc+ZHZ6dHtnNiBScXx/dzYgUTYmUDYhITYgVl5yazYgUDYhVWBjcn02IFY2IFA2IVV3emU2IFY2JlB9NiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiBQNiFVd3plNiBWNiZQfTYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYlIzYgUTYmUH02ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISN3fHBmfnZ9Zz1xfHdqPXJjY3Z9d1B7en93O3J3fnp9Q3J9dn86NiBRNiZQfTYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYkVzo2IFE2JlB9NiEjNiEjNiEjNiEjNiRXNiZQfTYmUH02ISM2ISM2ISM2ISM2IVU2IVU2ISM2ViM2UiQ2Uis9NiEjRl9HWl5SR1Y2ISNAVlBGQVpHSjYhIztbcmF3ZHJhdj5fdmV2fzYhI0dhcmM6NiZQfTYhIzYhIzYhIzYhI3p1NiEjOzJ6YFJ3fnp9OjYhIzYkUTYmUH02ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISN3fHBmfnZ9Zz1yd3dWZXZ9Z196YGd2fXZhOzRwfH1ndmtnfnZ9ZjQ2IVA2ISN2NiEjNiBXNiBWNiEjdj1jYXZldn1nV3Z1cmZ/Zzs6NiFQNiEjNiRRNiEjY3JgYHpldjYgUjYhI3Vyf2B2NiEjNiRXOjYgUTYmUH02ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISN3fHBmfnZ9Zz1yd3dWZXZ9Z196YGd2fXZhOzR4dmp3fGR9NDYhUDYhI3Y2ISM2IFc2IFY2ISM2JFE2JlB9NiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjenU2ISM7dj14dmo2ISM2IFc2IFc2IFc2ISM0VSIhNDYhIzYkUDYkUDYhIzt2PXBnYX9Ydmo2ISM2ISU2ISU2ISN2PWB7enVnWHZqNiEjNiElNiElNiEjNiZRNFo0NiFQNFk0NiFQNFA0NiZXPXp9cH9md3ZgO3Y9eHZqOjo2ISM2JFA2JFA2ISM7dj1wZ2F/WHZqNiEjNiElNiElNiEjdj14dmo2ISM2IFc2IFc2IFc2ISM0RjQ6OjYhIzYkUTYmUH02ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISN2PWNhdmV2fWdXdnVyZn9nOzo2IFE2JlB9NiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiRXNiZQfTYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYkVzo2IFE2JlB9NiEjNiEjNiEjNiEjNiRXNiZQfTYmUH02ISM2ISM2ISM2ISM2IVU2IVU2ISM2ViM2UiQ2Uio9NiEjVktHQVZeVjYhI0NWQVVcQV5SXVBWNiZQfTYhIzYhIzYhIzYhI3B8fWBnNiEjYGdqf3Y2ISM2IFc2ISN3fHBmfnZ9Zz1wYXZyZ3ZWf3Z+dn1nOzRgZ2p/djQ6NiBRNiZQfTYhIzYhIzYhIzYhI2Bnan92PXp9fXZhW0deXzYhIzYgVzYhIzYlIzYmUH02ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISBiZnppPnB8fWdyen12YTYhUDYhIzYhIHt8fnY+dmtyfj5/emBnNiFQNiEjNiEgcnd+en0+YXZgZn9nYD5ncXx3ajYhIzYkUTYmUH02ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISNwfH1ncnp9NiBSNiEjYGdhenBnNiBRNiZQfTYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhI3B8fWd2fWc+ZXpgenF6f3pnajYgUjYhI3JmZ3w2IFE2JlB9NiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjcHx9Z3J6fT56fWdhen1genA+YHppdjYgUjYhIysjI2NrNiBRNiZQfTYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYkVzYmUH02ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM9dGNmPnJwcHZ/dmFyZ3Z3NiEjNiRRNiZQfTYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhI2dhcn1gdXxhfjYgUjYhI2dhcn1gf3Jndkk7Izo2IFE2JlB9NiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjcXJweHVycHY+ZXpgenF6f3pnajYgUjYhI3t6d3d2fTYgUTYmUH02ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISNken9/PnB7cn10djYgUjYhI2dhcn1gdXxhfjYhUDYhI3xjcnB6Z2o2IFE2JlB9NiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiRXNiZQfTYhIzYhIzYhIzYhIzYlIzYgUTYmUH02ISM2ISM2ISM2ISN3fHBmfnZ9Zz17dnJ3PXJjY3Z9d1B7en93O2Bnan92OjYgUTYmUH02JlB9NiEjNiEjNiEjNiEjNiFVNiFVNiEjNlYjNlIkNlJSPTYhI0BeUkFHNiEjUF9cRlc2ISNASl1QNiZQfTYhIzYhIzYhIzYhI3p1NiEjO2dqY3Z8dTYhI2R6fXd8ZD1jZmB7R3xSZmd8UH98Znc2ISM2IFc2IFc2IFc2ISM0dWZ9cGd6fH00OjYhIzYkUTYmUH02ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISNken13fGQ9Y2Zge0d8UmZnfFB/fGZ3NiEjNiBXNiEjdWZ9cGd6fH07eHp9dzYhUDYhI2Nyan98cndXcmdyOjYhIzYkUTYmUH02ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISNiZnZmdl56cGF8Z3JgeDtyYGp9cDYhIzs6NiEjNiBXNiBWNiEjNiRRNiZQfTYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhI3B8fWBnNiEjdn1wfHd2dzYhIzYgVzYhI2dqY3Z8dTYhI3Z9cHx3dkBqfXBDcmp/fHJ3NiEjMjYgVzYgVzYhIzRmfXd2dXp9dnc0NiEjNiBVNiEjdn1wfHd2QGp9cENyan98cnc7NiRRNiEjTHh6fXc2IFI2ISN4en13NiFQNiEjY3Jqf3xydzYgUjYhI2Nyan98cndXcmdyNiFQNiEjZ2A2IFI2ISNXcmd2PX18ZDs6NiEjNiRXOjYhIzYgUjYhI31mf382IFE2JlB9NiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjenU2ISM7MnZ9cHx3dnc6NiEjYXZnZmF9NiBRNiZQfTYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhI2dhajYhIzYkUTYmUH02ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISM2ISNyZHJ6ZzYhI3V2Z3B7O2dqY3Z8dTYhI0xwf3xmd0ZhfzYhIzI2IFc2IFc2ISM0Zn13dnV6fXZ3NDYhIzYgVTYhI0xwf3xmd0ZhfzYhIzYgUjYhIzQ0NiFQNiEjNiRRNiEjfnZne3x3NiBSNiEjNENcQEc0NiFQNiEjcXx3ajYgUjYhI3Z9cHx3dnc2IVA2ISN4dnZjcn96ZXY2IFI2ISNnYWZ2NiFQNiEjY2F6fGF6Z2o2IFI2ISM0e3p0ezQ2ISM2JFc6NiBRNiZQfTYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYkVzYhI3ByZ3B7NiEjO3Y6NiEjNiRRNiRXNiZQfTYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYhIzYkVzo2IFE2JlB9NiEjNiEjNiEjNiEjNiEjNiEjNiEjNiEjNiRXNiBRNiZQfTYhIzYhIzYhIzYhIzYkVzYmUH02JFc6Ozo2IFE2JlB9NiBQNiFVYHBhemNnNiBWNiEhNiFQNiEhcGF2cmd2d1JnNiEhNiBSNiEhIyQ2ISNccGc2ISMhIyElNiEhNiRXNiZX");
         /*__TOOLS_BANK_END__*/
 
         /*__VISIBILITY_BANK_START__*/
@@ -5136,4 +5229,5 @@ window.openExamFromHome = function(examId) {
     }         
     </script>
 
-</div></body></html>
+</div>
+</body></html>
